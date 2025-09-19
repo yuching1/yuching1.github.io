@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>心理學科普單頁式網站</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --light-yellow: #FFF8E1;
+      --soft-yellow: #FFECB3;
+      --light-blue: #E8F7FF;
+      --soft-blue: #D8EEFF;
+      --accent: #89CFF0;
+      --text: #243038;
+      --muted: #55656B;
+      --radius: 12px;
+      --max-width: 1100px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Inter',sans-serif;color:var(--text);background: linear-gradient(180deg,var(--light-blue),var(--light-yellow));line-height:1.6;}
+    .nav-wrap{position:fixed;top:16px;left:50%;transform:translateX(-50%);width:calc(100% - 48px);max-width:var(--max-width);z-index:1000;animation:fadeDown 0.8s ease;}
+    nav{background:rgba(255,255,255,0.7);backdrop-filter:blur(6px);border-radius:20px;padding:10px 16px;box-shadow:0 6px 22px rgba(20,30,40,0.08);display:flex;justify-content:space-between;align-items:center;}
+    .brand{font-weight:700;}
+    .nav-links{display:flex;gap:12px;}
+    .nav-links a{padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--muted);font-weight:600;transition:all 0.3s ease;}
+    .nav-links a.active,.nav-links a:hover{background:rgba(255,255,255,0.8);color:var(--text);transform:scale(1.05)}
+    .container{max-width:var(--max-width);margin:0 auto;padding:120px 24px 80px;}
+    section{padding:48px 18px;margin-bottom:32px;border-radius:var(--radius);background:rgba(255,255,255,0.6);box-shadow:0 8px 30px rgba(16,24,32,0.04);opacity:0;transform:translateY(30px);transition:all 0.8s ease;}
+    section.visible{opacity:1;transform:translateY(0)}
+    h1,h2{margin:0 0 12px}
+    p{margin:0 0 16px;color:var(--muted)}
+    img{max-width:100%;border-radius:12px;display:block;margin:12px auto;transition:transform 0.4s ease}
+    img:hover{transform:scale(1.05)}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+    .card{padding:18px;border-radius:12px;background:linear-gradient(180deg,var(--soft-blue),rgba(255,255,255,0.6));transition:transform 0.3s ease}
+    .card:hover{transform:translateY(-6px)}
+    .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    .project{border-radius:10px;padding:12px;background:linear-gradient(180deg,rgba(255,255,255,0.3),rgba(255,255,255,0.1));text-align:center;transition:transform 0.3s ease}
+    .project:hover{transform:translateY(-8px)}
+    .project img{max-width:100%;height:150px;object-fit:cover;border-radius:8px;margin-bottom:8px}
+    .quiz{margin-top:20px;padding:16px;background:var(--soft-yellow);border-radius:12px;animation:fadeIn 1s ease}
+    .quiz button{margin-top:10px;padding:8px 12px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-weight:600;cursor:pointer;transition:background 0.3s ease}
+    .quiz button:hover{background:#5cb8e6}
+    .flip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:24px}
+    .flip-card{perspective:1000px;}
+    .flip-inner{position:relative;width:100%;height:220px;transition:transform 0.6s;transform-style:preserve-3d;}
+    .flip-card:hover .flip-inner{transform:rotateY(180deg)}
+    .flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:12px;display:flex;align-items:center;justify-content:center;padding:16px;text-align:center;}
+    .flip-front{background:var(--soft-blue);}
+    .flip-back{background:var(--soft-yellow);transform:rotateY(180deg);}
+    .fact-box{margin-top:30px;padding:20px;border-radius:12px;background:var(--soft-blue);text-align:center}
+    .fact-box button{margin-top:12px;padding:10px 16px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-weight:600;cursor:pointer;transition:background 0.3s ease}
+    .fact-box button:hover{background:#5cb8e6}
+    footer{text-align:center;color:var(--muted);font-size:14px;margin-top:12px;opacity:0.8}
+
+    @keyframes fadeDown{from{opacity:0;transform:translate(-50%,-30px)}to{opacity:1;transform:translate(-50%,0)}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  </style>
+</head>
+<body>
+  <div class="nav-wrap" id="navWrap">
+    <nav>
+      <div class="brand">心理學科普</div>
+      <div class="nav-links">
+        <a href="#home" class="active">首頁</a>
+        <a href="#about">關於</a>
+        <a href="#services">議題</a>
+        <a href="#portfolio">例子</a>
+      </div>
+    </nav>
+  </div>
+
+  <main class="container">
+    <section id="home">
+      <h1>探索心理學的世界</h1>
+      <p>心理學不只是研究「問題」，更是理解人類心智與行為的科學。這裡將帶你輕鬆了解日常生活中的心理學知識。</p>
+      <img src="images/brain.jpg" alt="大腦示意圖">
+    </section>
+
+    <section id="about">
+      <h2>關於心理學</h2>
+      <p>心理學是一門研究心智與行為的學科，涵蓋從腦神經機制到人際互動的廣大範疇。它幫助我們更好地理解自己與他人。</p>
+      <div class="cards">
+        <div class="card">認知心理學：研究認知及行為背後之心智處理的心智科學</div>
+        <div class="card">發展心理學：研究個體在生命全期發展歷程中的科學</div>
+      </div>
+      <div class="cards">
+        <div class="card">性格心理學：研究人格及其在個體之間的差異</div>
+        <div class="card">社會心理學：研究個體和群體的心理、行為等科學</div>
+      </div>
+      <img src="images/psychology.jpg" alt="心理學圖示">
+    </section>
+
+    <section id="services">
+      <h2>心理學議題</h2>
+      <p>以下是常見的心理學議題：</p>
+      <div class="cards">
+        <div class="card">決策思考</div>
+        <div class="card">大腦科學</div>
+        <div class="card">心理測驗</div>
+        <div class="card">認知行為</div>
+      </div>      
+      <div class="cards">
+        <div class="card">情緒管理</div>
+        <div class="card">人際互動</div>
+        <div class="card">動機習慣</div>
+        <div class="card">心理健康</div>
+      </div>
+      <div class="quiz">
+        <h3>小測驗：你知道嗎？</h3>
+        <p>「多巴胺」主要與什麼有關？</p>
+        <button onclick="checkAnswer('a')">A. 消化系統</button>
+        <button onclick="checkAnswer('b')">B. 獎賞與動機</button>
+        <button onclick="checkAnswer('c')">C. 骨骼生長</button>
+        <p id="quiz-result"></p>
+      </div>
+      <div class="flip-grid">
+        <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">記憶力</div>
+            <div class="flip-back">睡眠不足會大幅降低記憶力表現。</div>
+          </div>
+        </div>
+        <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">壓力</div>
+            <div class="flip-back">適度壓力能提升專注，但過度壓力則會讓表現下降。</div>
+          </div>
+        </div>
+        <div class="flip-card">
+          <div class="flip-inner">
+            <div class="flip-front">情緒</div>
+            <div class="flip-back">情緒會影響決策，我們常在情緒化時做出不同選擇。</div>
+          </div>
+        </div>
+      </div>
+      <div class="fact-box">
+        <h3>隨機心理學冷知識</h3>
+        <p id="random-fact">點擊按鈕看看有趣的小知識！</p>
+        <button onclick="showRandomFact()">顯示冷知識</button>
+      </div>
+    </section>
+
+    <section id="portfolio">
+      <h2>日常例子</h2>
+      <p>心理學在生活中無處不在：</p>
+      <div class="grid-3">
+        <div class="project">
+          <img src="images/stress.jpg" alt="考試壓力">
+          <div>考前容易忘記？——壓力與記憶</div>
+        </div>
+        <div class="project">
+          <img src="images/drama.jpg" alt="追劇">
+          <div>追劇停不下來？——多巴胺與獎賞迴路</div>
+        </div>
+        <div class="project">
+          <img src="images/phone.jpg" alt="手機成癮">
+          <div>手機成癮？——習慣養成的心理學</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> 心理學科普網站
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const links=document.querySelectorAll('.nav-links a');
+    const sections=document.querySelectorAll('main section');
+    function updateActive(){
+      const fromTop=window.scrollY+90;
+      let current=sections[0].id;
+      sections.forEach(sec=>{if(sec.offsetTop<=fromTop)current=sec.id;});
+      links.forEach(a=>a.classList.toggle('active',a.getAttribute('href').slice(1)===current));
+    }
+    window.addEventListener('scroll',updateActive);
+    updateActive();
+
+    // 讓 section 滾動到可視範圍時淡入
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){e.target.classList.add('visible');}
+      });
+    },{threshold:0.1});
+    sections.forEach(sec=>observer.observe(sec));
+
+    function checkAnswer(option){
+      const result=document.getElementById('quiz-result');
+      if(option==='b'){
+        result.textContent='答對了！多巴胺與獎賞及動機有關。';
+        result.style.color='green';
+      } else {
+        result.textContent='不太對，再想想看喔！';
+        result.style.color='red';
+      }
+    }
+
+    // 隨機心理學冷知識
+const facts = [
+
+  "笑可以減少壓力荷爾蒙，提升免疫力。",
+  "人類注意力平均只能集中約 8 秒，比金魚還短。",
+  "寫日記有助於調節情緒並提升自我反思。",
+  "正念冥想能有效改善焦慮與專注力。",
+
+  // 新增心理學小知識
+  "大腦約60%是脂肪，能產生電力。",
+  "大腦血管總長可達月球一半。",
+  "光線影響情緒與睡眠。",
+  "成年人每月記得約4~10個夢。",
+  "夢中負面情緒比正面情緒更常見。",
+  "戀愛初期的生化反應像強迫症。",
+  "多任務處理會降低效率。",
+  "每晚做多個夢，每個約5~20分鐘。",
+  "網路匿名容易增加說謊行為。",
+  "情緒比細節更容易被記住。",
+  "光環效應會扭曲對他人的判斷。",
+  "鏡像神經元讓我們更有同理心。",
+  "源記憶遺失可能造成錯誤記憶。",
+  "人天生會遵從社會規範。",
+  "聚光燈效應讓我們高估他人注意力。",
+  "名字字母效應：偏好自己的名字或生日數字。",
+  "注意力範圍比金魚短。",
+  "每分鐘思考約5萬次。",
+  "從眾實驗顯示群體壓力影響判斷。",
+  "服從實驗顯示權威影響力大。",
+  "監獄實驗揭示角色與情境影響行為。",
+  "溫特創立了世界第一個心理學實驗室。",
+  "心理學研究的結果常難以重現。",
+  "大腦儲存容量約2,500,000GB。",
+  "故事比單純資訊更易被記住。",
+  "短期壓力可提速反應，長期傷腦。",
+  "微笑可促進多巴胺釋放，改善心情。",
+  "顏色影響情緒，例如藍色讓人冷靜。",
+  "音樂能影響心情與學習效率。",
+  "運動促進神經因子釋放，改善記憶。"
+
+];
+
+    function showRandomFact(){
+      const fact=document.getElementById('random-fact');
+      const random=facts[Math.floor(Math.random()*facts.length)];
+      fact.textContent=random;
+    }
+  </script>
+</body>
+</html>
