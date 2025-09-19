@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AS01</title>
+    <title>世界八大熊介紹</title>
     <style>
         * {
             margin: 0;
@@ -17,32 +17,33 @@
             color: #333;
         }
 
-        /* 整體容器 */
         .wrapper {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 20px auto;
             background-color: white;
             border: 2px solid #ccc;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Banner 區域 */
         .banner {
             background-color: #6b8e7d;
             color: white;
             padding: 20px;
             font-size: 24px;
             font-weight: bold;
+            text-align: center;
         }
 
-        /* 主內容容器 */
         .main-container {
             display: flex;
+            flex: 1;
             min-height: 400px;
         }
 
         /* 左側導航 */
         .sidebar {
-            width: 150px;
+            flex: 0 0 180px;
             background-color: #d4d4aa;
             padding: 20px 15px;
         }
@@ -65,57 +66,127 @@
             color: #004499;
         }
 
-        /* 中央內容區 */
+        /* 中央內容 */
         .content {
             flex: 1;
             background-color: #e8e8e8;
             padding: 20px;
-            position: relative;
         }
 
-        .content h1 {
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: #333;
+        .content section {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            align-items: flex-start;
+        }
+
+        .content img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
         }
 
         .content h2 {
             font-size: 24px;
-            margin-bottom: 15px;
-            color: #333;
+            margin-bottom: 10px;
         }
 
-        /* 右側資訊欄 */
+        .content p {
+            line-height: 1.5;
+        }
+
+        /* 右側翻牌卡資訊欄 */
         .info-sidebar {
-            width: 150px;
+            flex: 0 0 250px;
             background-color: #b8b8b8;
             padding: 15px;
-            color: #333;
             font-size: 14px;
         }
 
-        /* 頁腳 */
+        .info-sidebar h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #222;
+        }
+
+        .fun-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .card {
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 60px;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 6px;
+            padding: 5px;
+            font-size: 13px;
+        }
+
+        .card-front {
+            background-color: #dcdcdc;
+            color: #222;
+            font-weight: bold;
+        }
+
+        .card-back {
+            background-color: #e0e0e0;
+            color: #333;
+            transform: rotateY(180deg);
+        }
+
         .footer {
             background-color: #8b9657;
             color: white;
             padding: 15px 20px;
             font-size: 14px;
+            text-align: center;
         }
 
-        /* 響應式設計 */
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             .main-container {
                 flex-direction: column;
             }
-            
+
             .sidebar,
             .info-sidebar {
+                flex: 0 0 auto;
                 width: 100%;
+                margin-bottom: 10px;
             }
-            
-            .banner {
-                font-size: 20px;
-                padding: 15px;
+
+            .content section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .content img {
+                margin-bottom: 10px;
             }
         }
     </style>
@@ -123,53 +194,157 @@
 <body>
     <div class="wrapper">
         <!-- Banner -->
-        <div class="banner">
-            Here is banner
-        </div>
+        <div class="banner">世界八大熊介紹</div>
 
-        <!-- 主內容區域 -->
+        <!-- 主內容區 -->
         <div class="main-container">
             <!-- 左側導航 -->
             <div class="sidebar">
                 <ul>
-                    <li><a href="#announce">Announce</a></li>
-                    <li><a href="#trending">Trending</a></li>
-                    <li><a href="#selected">Selected</a></li>
-                    <li><a href="#members">Members</a></li>
+                    <li><a href="#polar">北極熊</a></li>
+                    <li><a href="#american">美洲黑熊</a></li>
+                    <li><a href="#asiatic">亞洲黑熊</a></li>
+                    <li><a href="#malayan">馬來熊</a></li>
+                    <li><a href="#brown">棕熊</a></li>
+                    <li><a href="#panda">大熊貓</a></li>
+                    <li><a href="#sloth">懶熊</a></li>
+                    <li><a href="#spectacled">眼鏡熊</a></li>
                 </ul>
-                <p style="margin-top: 10px; font-size: 12px; color: #666;">
-                    Here is content area
-                </p>
             </div>
 
             <!-- 中央內容 -->
             <div class="content">
-                <section id="announce">
-                    <h1>Announce</h1>
+                <section id="polar">
+                    <img src="images/polar.jpg" alt="北極熊">
+                    <div>
+                        <h2>北極熊 (Polar Bear)</h2>
+                        <p>北極熊主要分布在北極地區，以海豹為主要食物。</p>
+                    </div>
                 </section>
-                
-                <section id="trending">
-                    <h2>Trending</h2>
+
+                <section id="american">
+                    <img src="images/american.jpg" alt="美洲黑熊">
+                    <div>
+                        <h2>美洲黑熊 (American Black Bear)</h2>
+                        <p>美洲黑熊分布於北美洲森林地帶，雜食性。</p>
+                    </div>
                 </section>
-                
-                <section id="selected">
-                    <h2>Selected</h2>
+
+                <section id="asiatic">
+                    <img src="images/asiatic.jpg" alt="亞洲黑熊">
+                    <div>
+                        <h2>亞洲黑熊 (Asiatic Black Bear)</h2>
+                        <p>亞洲黑熊分布於亞洲地區，以果實和昆蟲為主食。</p>
+                    </div>
                 </section>
-                
-                <section id="members">
-                    <h2>Members</h2>
+
+                <section id="malayan">
+                    <img src="images/sun.jpg" alt="馬來熊">
+                    <div>
+                        <h2>馬來熊 (Sun Bear)</h2>
+                        <p>馬來熊生活在東南亞熱帶雨林，是體型最小的熊。</p>
+                    </div>
+                </section>
+
+                <section id="brown">
+                    <img src="images/brown.jpg" alt="棕熊">
+                    <div>
+                        <h2>棕熊 (Brown Bear)</h2>
+                        <p>棕熊廣泛分布於歐亞大陸及北美，雜食性。</p>
+                    </div>
+                </section>
+
+                <section id="panda">
+                    <img src="images/panda.jpg" alt="大熊貓">
+                    <div>
+                        <h2>大熊貓 (Giant Panda)</h2>
+                        <p>大熊貓主要以竹子為食，分布於中國四川等地。</p>
+                    </div>
+                </section>
+
+                <section id="sloth">
+                    <img src="images/sloth.jpg" alt="懶熊">
+                    <div>
+                        <h2>懶熊 (Sloth Bear)</h2>
+                        <p>懶熊分布於印度及斯里蘭卡，以昆蟲為食。</p>
+                    </div>
+                </section>
+
+                <section id="spectacled">
+                    <img src="images/spectacled.jpg" alt="眼鏡熊">
+                    <div>
+                        <h2>眼鏡熊 (Spectacled Bear)</h2>
+                        <p>眼鏡熊生活在南美安第斯山脈，以植物果實為主。</p>
+                    </div>
                 </section>
             </div>
 
-            <!-- 右側資訊 -->
+            <!-- 右側翻牌卡資訊欄 -->
             <div class="info-sidebar">
-                Here for extra information
+                <h3>熊類趣味小知識</h3>
+                <div class="fun-cards">
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">北極熊</div>
+                            <div class="card-back">❄ 北極熊的皮膚是黑色的，有助於吸收太陽熱量。</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">美洲黑熊</div>
+                            <div class="card-back">🌲 美洲黑熊能夠爬樹，即使是成年的雄熊也能輕鬆上樹。</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">亞洲黑熊</div>
+                            <div class="card-back">🍇 亞洲黑熊胸前有白V形標記。</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">馬來熊</div>
+                            <div class="card-back">🍯 馬來熊舌頭非常長，可抓取蜂蜜或昆蟲。</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">棕熊</div>
+                            <div class="card-back">🐾 棕熊會冬眠 5~7 個月，不排泄也不喝水。</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">大熊貓</div>
+                            <div class="card-back">🎋 大熊貓有“假拇指”，方便抓竹子。</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">懶熊</div>
+                            <div class="card-back">🦥 懶熊擅長挖洞捕蟲，舌頭上有特殊毛刷。</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-inner">
+                            <div class="card-front">眼鏡熊</div>
+                            <div class="card-back">🕶 眼鏡熊眼睛周圍有白色或米色圈，像戴眼鏡。</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- 頁腳 -->
+        <!-- 頁尾 -->
         <div class="footer">
-            footer
+            Thank you for visiting the page.
         </div>
     </div>
 </body>
