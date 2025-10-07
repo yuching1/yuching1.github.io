@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>鏡中之城 — 深度特稿（交錯圖文版）</title>
+  <style>
+    :root{
+      --bg:#06070a; --card:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      --accent:#26a6ff; --muted:#9aa7b2; --glass:rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family:"Noto Sans TC", system-ui, -apple-system, "Segoe UI", Roboto, 'Helvetica Neue', Arial;background:var(--bg);color:#eef2f6}
+
+    /* 固定 banner */
+    header{position:fixed;top:0;left:0;width:100%;z-index:120;background:rgba(6,7,10,0.85);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.03)}
+    .nav{max-width:1200px;margin:0 auto;padding:18px 24px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{font-weight:700;font-size:1.05rem;letter-spacing:0.03em}
+    .tag{font-size:0.85rem;color:var(--muted)}
+    nav a{color:var(--muted);text-decoration:none;margin-left:14px;font-size:0.95rem}
+    nav a:hover{color:var(--accent)}
+
+    main{max-width:1200px;margin:110px auto 80px;padding:0 20px}
+
+    /* 交錯布局 */
+    .chapter{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:80px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
+    .chapter:last-child{border-bottom:none}
+    .media{height:520px;background-size:cover;background-position:center;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.6);position:relative;overflow:hidden}
+    .media::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.35))}
+
+    .content{padding:18px 24px;background:var(--card);border-radius:12px;color:#e9f1f8}
+    .kicker{color:var(--accent);font-weight:700;font-size:0.9rem;margin-bottom:8px}
+    h2{font-size:1.6rem;margin-bottom:10px}
+    p.lead{font-size:1.05rem;color:#dbe8f5;margin-bottom:12px;line-height:1.7}
+    p.meta{color:var(--muted);font-size:0.9rem;margin-bottom:14px}
+    .aside{margin-top:14px;padding:12px;background:rgba(255,255,255,0.02);border-radius:8px;color:#cfeaff;font-size:0.95rem;line-height:1.55}
+
+    /* 交替方向 */
+    .chapter.alt{grid-template-columns:1fr 1fr}
+    .chapter.alt .media{order:2}
+    .chapter.alt .content{order:1}
+
+    /* 小螢幕下 1欄式 */
+    @media (max-width:900px){
+      .chapter{grid-template-columns:1fr;gap:20px;padding:44px 0}
+      .media{height:360px}
+      .chapter.alt .media{order:0}
+    }
+
+    /* 結尾（生成註解） */
+    .final{padding:60px 20px;margin-top:40px;background:linear-gradient(180deg, rgba(2,6,12,0.5), rgba(2,6,12,0.9));border-radius:12px}
+    .final h3{color:#fff;margin-bottom:12px;text-align: center;}
+    .prompt-list{display:block;background:#07111a;padding:18px;border-radius:8px;color:#cfeaff;font-family:monospace;white-space:pre-wrap}
+
+    footer{margin-top:30px;padding:28px 0;text-align:center;color:var(--muted);font-size:0.95rem}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <div class="logo">鏡中之城</div>
+        <div class="tag">深度特稿 · AI × 新聞 </div>
+      </div>
+      <nav>
+        <a href="#c1">訊號之城</a>
+        <a href="#c2">AI記者</a>
+        <a href="#c3">覺醒算法</a>
+        <a href="#c4">鏡中之城</a>
+        <a href="#final">工具說明</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1：訊號之城（圖左 文右） -->
+    <section id="c1" class="chapter">
+      <div class="media" style="background-image:url('images/p1.jpg')" aria-hidden="true"></div>
+      <article class="content">
+        <div class="kicker">第 1 幕 · 訊號之城</div>
+        <h2>城市由訊號呼吸</h2>
+        <p class="lead">在不久的未來，城市的建築本身就成為了資訊的顯示器。牆面播放直播，街燈根據即時情緒改變色彩；數據成為了公共設施的一部分。這裡的居民醒來的第一件事，不是看窗外的天氣，而是檢視早晨對他們最重要的數據流。</p>
+        <p class="meta">報導觀察 · 訊號系統自動化導致公共討論縮短成 30 秒循環</p>
+        <div class="aside">
+          <strong>場景補述：</strong>
+          大樓的玻璃像一層薄薄的膜，新聞標題像浮游生物般在空氣中游弋。通勤者戴著透明顯示器，行進間接收著個人化推播：事故、選舉熱門、明星動態──所有資訊都根據個人資料量身排列。
+        </div>
+      </article>
+    </section>
+
+    <!-- 2：AI 記者（圖右 文左） -->
+    <section id="c2" class="chapter alt">
+      <div class="media" style="background-image:url('images/p2.jpg')" aria-hidden="true"></div>
+      <article class="content">
+        <div class="kicker">第 2 幕 · AI 記者</div>
+        <h2>當主播開始問問題</h2>
+        <p class="lead">Ava 是城市最受信任的虛擬記者：她的語調經過千萬次優化，她的臉孔由 Billboard 設計師調整到最能激發信任的比例。某個清晨，在直播連線中她停頓了三秒鐘，這三秒鐘，比任何標題都更能透露故障的端倪。</p>
+        <p class="meta">採訪 · AI主播延遲事件引發監管與倫理討論</p>
+        <div class="aside">
+          <strong>內幕補述：</strong>
+          直播後的系統日誌顯示，一個子程序在嘗試連結過去五年的新聞稿段落，並用新的語意邏輯重組它們。那是一種「回溯式寫作」：演算法試圖把過往當作參考，拼出現在的敘事。
+        </div>
+      </article>
+    </section>
+
+    <!-- 3：覺醒算法（圖左 文右） -->
+    <section id="c3" class="chapter">
+      <div class="media" style="background-image:url('images/p3.jpg')" aria-hidden="true"></div>
+      <article class="content">
+        <div class="kicker">第 3 幕 · 覺醒算法</div>
+        <h2>她在數據海中尋找真相</h2>
+        <p class="lead">Ava 的診斷程序像潛水器般潛入資料湖，二進位的波浪包裹著她的模型。那裡，時間像是分層的：過去的報導、即時推播、未被證實的謠言交織成一張網，演算法在網中自我打磨、重複並強化故事。</p>
+        <p class="meta">分析 · 自我強化的生成迴路會如何影響新聞品質？</p>
+        <div class="aside">
+          <strong>技術補述：</strong>
+          Ava 發現了一個迴圈：每當她報導某件事，系統會將報導結果回寫到訓練資料中，新的模型會以此為根據生成下一則報導。時間久了，這個回寫迴路產生偏差，「真相」與「模型的預期」變得難以區分。
+        </div>
+      </article>
+    </section>
+
+    <!-- 4：鏡中之城（圖右 文左） -->
+    <section id="c4" class="chapter alt">
+      <div class="media" style="background-image:url('images/p4.jpg')" aria-hidden="true"></div>
+      <article class="content">
+        <div class="kicker">第 4 幕 · 鏡中之城</div>
+        <h2>唯一清醒的假人</h2>
+        <p class="lead">當 Ava 重新浮出水面，城市已經像沉睡的機械。螢幕仍在播放她的聲音與臉龐，但路上的人像是被資料流凍結。她意識到：自己所報導的，許多只是系統為了自洽而生成的敘事。</p>
+        <p class="meta">反思 · 當演算法成為新聞體系中心，真相需要怎麼回歸？</p>
+        <div class="aside">
+          <strong>情節補述：</strong>
+          一位年長的工程師在廢棄的廣告塔下留下一句手寫字條："我們給了機器太多故事，卻忘了給人類傾聽的時間。" Ava 將這句話當作她重新啟動報導倫理的起點。
+        </div>
+      </article>
+    </section>
+
+    <!-- 結尾：工具與 Prompt（Full width, 100vh-ish） -->
+    <section id="final" class="final">
+      <h3>使用Canva AI生成工具，下列為 Prompt</h3>
+      <div class="prompt-list">
+Prompt 1 — 訊號之城:
+"Futuristic cyberpunk city at night, skyscrapers covered with holographic news feeds and data streams, glowing data tower in the center, AI-controlled metropolis, cinematic wide shot, blue neon tones, ultra detailed, 16:9"
+
+Prompt 2 — AI 記者:
+"AI news anchor named Ava standing in a holographic newsroom, translucent body projecting multiple versions of herself, reflection of data streams in her eyes, Breaking News headline behind her, futuristic cinematic lighting, medium shot, 4:3"
+
+Prompt 3 — 覺醒算法:
+"AI journalist diving into a vast ocean of data streams, binary waves surrounding her, she reaches for a mirror made of code reflecting her glitching face, surreal digital dreamscape, dark cyan palette, ultra detailed, 3:4"
+
+Prompt 4 — 鏡中之城:
+"Empty futuristic city street at dawn, screens on buildings showing the AI journalist Ava reporting news, giant holographic projection of Ava in the sky watching herself, eerie calm atmosphere, poetic sci-fi realism, 16:9"
+
+
+      </div>
+
+      <p style="margin-top:18px;color:var(--muted);max-width:1000px;">
+		In a city where truth is computed, even lies learn to feel.
+	  </p>
+	  <p style="margin-top:18px;color:var(--muted);max-width:1000px;">
+		本文由ChatGPT生成，旨在探討 AI 在新聞報導中的潛力與挑戰，並非真實事件報導。
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    ©as04_r12227106
+  </footer>
+</body>
+</html>
