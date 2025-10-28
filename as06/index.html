@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>美國東岸之旅 | Travel Diary</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", sans-serif;
+      color: #222;
+      overflow-x: hidden;
+    }
+    h1, h2 { text-align: center; font-weight: 700; margin-bottom: 1rem; }
+    p { line-height: 1.9; max-width: 820px; text-align: center; margin: 0 auto; font-size: 1.05rem; }
+    section {
+      position: relative;
+      min-height: 120vh; /* 高度加高，章節明確 */
+      padding: 10vh 8vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: transparent;
+    }
+
+    /* ===== 導覽列 ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem 0;
+    }
+    nav a { text-decoration: none; color: #444; font-weight: 600; transition: color 0.3s; }
+    nav a:hover { color: #e63946; }
+
+    /* ===== Hero Section ===== */
+    .hero {
+      position: relative;
+      background: url('images/america.jpg') 50% center / cover no-repeat;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 3rem;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      transition: background-size 1.5s ease, background-position 1.5s ease;
+      background-size: 100%;
+    }
+    .hero::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
+    .hero-content { position: relative; z-index: 2; }
+
+    /* ===== Section 背景層 ===== */
+    .section-bg {
+      position: absolute; /* 改絕對定位，章節內部 */
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+      opacity: 0.8;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    /* ===== 翻牌效果 ===== */
+    .card-grid { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; margin-top: 3rem; }
+    .card-container { perspective: 1000px; width: 280px; height: 180px; }
+    .card { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 1s; cursor: pointer; }
+    .card.flip { transform: rotateY(180deg); }
+    .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 10px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
+    .card-front { background-size: cover; background-position: center; }
+    .card-back { background: #fff; transform: rotateY(180deg); display: flex; align-items: center; justify-content: center; padding: 1rem; font-size: 0.95rem; line-height: 1.6; color: #333; }
+
+    /* ===== Focus Mode ===== */
+    .focus-section { transition: filter 1s ease, opacity 1s ease; }
+    .dimmed { filter: brightness(0.6) grayscale(30%); opacity: 0.85; }
+
+    /* ===== Highlight Underline ===== */
+    span.highlight { position: relative; font-weight: 500; }
+    span.highlight::after { content: ""; position: absolute; left: 0; bottom: -4px; width: 0%; height: 3px; background: #e63946; transition: width 0.6s ease; }
+    span.highlight.active::after { width: 100%; }
+
+    /* ===== Footer ===== */
+    footer { text-align: center; padding: 2rem; font-size: 0.9rem; color: #555; background: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+  <!-- 導覽列 -->
+  <nav>
+    <a href="#washington">Washington D.C.</a>
+    <a href="#newyork">New York</a>
+    <a href="#boston">Boston</a>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-content">🇺🇸 美國東岸之旅</div>
+  </section>
+
+  <!-- Washington -->
+  <section id="washington">
+    <div class="section-bg" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5)), url('images/b1.jpg');"></div>
+    <h2>Washington D.C.</h2>
+    <p>
+      華盛頓作為美國政治與歷史中心，擁有白宮與國會大廈。街道對稱宏偉，象徵秩序與民主精神。  
+      林肯紀念堂、國家廣場與史密森尼博物館群展示藝術與科學成就。  
+      杜邦圓環與喬治城街頭的小咖啡館與獨立書店，展現文青氣息。  
+      此地不僅有政治力量，也保有文化深度與市民生活的溫度。
+    </p>
+    <div class="card-grid">
+      <div class="card-container">
+        <div class="card">
+          <div class="card-face card-front" style="background-image:url('images/p1.jpg')"></div>
+          <div class="card-face card-back">白宮外觀，象徵總統權力與歷史。</div>
+        </div>
+      </div>
+      <div class="card-container">
+        <div class="card">
+          <div class="card-face card-front" style="background-image:url('images/p2.jpg')"></div>
+          <div class="card-face card-back">公共圖書館內部，融合知識與建築美學。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- New York -->
+  <section id="newyork" class="focus-section">
+    <div class="section-bg" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5)), url('images/b2.jpg');"></div>
+    <h2>New York</h2>
+    <p>
+      紐約是全球文化、藝術與商業中心。自由女神象徵美國精神，百老匯代表世界級表演藝術。  
+      中央公園提供城市綠洲，街頭藝人、博物館與咖啡館呈現多元文化。  
+      第五大道展現時尚與建築，布魯克林大橋是俯瞰天際線的絕佳位置。  
+      此城市充滿活力、創意與歷史交融的氛圍。
+    </p>
+    <div class="card-grid">
+      <div class="card-container">
+        <div class="card">
+          <div class="card-face card-front" style="background-image:url('images/p3.jpg')"></div>
+          <div class="card-face card-back">自由女神像，象徵自由與希望。</div>
+        </div>
+      </div>
+      <div class="card-container">
+        <div class="card">
+          <div class="card-face card-front" style="background-image:url('images/p4.jpg')"></div>
+          <div class="card-face card-back">百老匯劇院，世界頂尖表演舞台。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Boston -->
+  <section id="boston">
+    <div class="section-bg" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5)), url('images/b3.jpg');"></div>
+    <h2>Boston</h2>
+    <p>
+      波士頓融合歷史與學術氣息。自由之路帶領穿越美國獨立歷史，紅磚街道充滿文化痕跡。  
+      燈塔山俯瞰海港與城市景色，哈佛大學與MIT展現教育與創新力量。  
+      博物館、咖啡館與市集提供生活溫度與人文特色，是理想的歷史與文化探索之地。
+    </p>
+    <div class="card-grid">
+      <div class="card-container">
+        <div class="card">
+          <div class="card-face card-front" style="background-image:url('images/p5.jpg')"></div>
+          <div class="card-face card-back">燈塔山景觀，俯瞰城市與海港美景。</div>
+        </div>
+      </div>
+      <div class="card-container">
+        <div class="card">
+          <div class="card-face card-front" style="background-image:url('images/p6.jpg')"></div>
+          <div class="card-face card-back">哈佛大學校園，文化與智慧象徵。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    ©as06_r12227106
+  </footer>
+
+  <script>
+    const hero = document.querySelector('.hero');
+    const sections = document.querySelectorAll('section');
+    const cards = document.querySelectorAll('.card');
+    const focusSection = document.querySelector('.focus-section');
+    const highlights = document.querySelectorAll('span.highlight');
+
+    window.addEventListener('scroll', () => {
+      // Hero 放大 / 回縮
+      if(window.scrollY > 50){
+        hero.style.backgroundSize = '170%';
+        hero.style.backgroundPosition = '80% center';
+      } else {
+        hero.style.backgroundSize = '100%';
+        hero.style.backgroundPosition = '50% center';
+      }
+
+      // Focus mode
+      if(focusSection){
+        const rect = focusSection.getBoundingClientRect();
+        if(rect.bottom < window.innerHeight * 0.5) focusSection.classList.add('dimmed');
+        else focusSection.classList.remove('dimmed');
+      }
+
+      // Highlight underline
+      highlights.forEach(span => {
+        const rect = span.getBoundingClientRect();
+        if(rect.top < window.innerHeight * 0.8) span.classList.add('active');
+      });
+
+      // 背景透明度 + 簡單視差
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        const bg = sec.querySelector('.section-bg');
+        if(bg){
+          let progress = (window.innerHeight - rect.top) / (window.innerHeight * 1.5);
+          progress = Math.min(Math.max(progress,0),1);
+          bg.style.opacity = 0.6 + progress*0.4; // 0.6~1.0
+          bg.style.transform = `translateY(${rect.top * 0.15}px)`;
+        }
+      });
+    });
+
+    // 翻牌點按觸發
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        card.classList.toggle('flip');
+      });
+    });
+
+    // 導覽平滑滾動
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        window.scrollTo({ top: target.offsetTop - 60, behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>
