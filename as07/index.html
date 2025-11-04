@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>城市到海邊的動態旅程</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { overflow-x:hidden; font-family: Arial, sans-serif; background: linear-gradient(#000022, #001144); }
+
+.banner {
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:3rem;
+    color:white;
+    background: url('https://picsum.photos/id/1011/1600/900') center/cover no-repeat;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, filter 0.3s;
+}
+
+.scroll-container { height:500vh; position:relative; }
+
+.horizontal-section {
+    position:sticky;
+    top:0;
+    height:100vh;
+    width:500vw; 
+    display:flex;
+}
+
+.horizontal-item {
+    width:100vw;
+    height:100vh;
+    flex-shrink:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:3rem;
+    color:white;
+    position:relative;
+}
+
+.horizontal-item img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition: filter 0.3s;
+}
+
+/* 每張圖片文字 */
+.horizontal-item span {
+    position:absolute;
+    bottom:15%;
+    left:10%;
+    font-size:2rem;
+    color:white;
+    opacity:0;
+    transition: opacity 0.6s ease-in-out;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+}
+
+/* 星星粒子背景 */
+#stars {
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:0;
+}
+.star {
+    position:absolute;
+    width:2px;
+    height:2px;
+    background:white;
+    border-radius:50%;
+    opacity:0.8;
+    animation: twinkle 2s infinite alternate;
+}
+@keyframes twinkle {
+    from { opacity:0.2; transform: scale(0.5);}
+    to { opacity:1; transform: scale(1.2);}
+}
+
+/* Footer */
+.footer-section {
+    padding: 10px 0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:1rem;
+    color:white;
+    background-color:#222;
+}
+
+/* 大段文字說明 section */
+.text-section {
+    width: 90%;
+    max-width: 1000px;
+    margin: 50px auto;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color:white;
+}
+.text-section p { margin-bottom: 20px; }
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<div class="banner">城市到海邊的動態旅程</div>
+
+<div class="scroll-container">
+    <div class="horizontal-section">
+        <div class="horizontal-item">
+            <img src="https://picsum.photos/id/1015/1600/900" alt="city">
+            <span>城市日落，旅程開始。街道燈光點亮夜晚，心情充滿期待。</span>
+        </div>
+        <div class="horizontal-item">
+            <img src="https://picsum.photos/id/1016/1600/900" alt="park">
+            <span>穿過公園，綠意盎然。清新的空氣和微風讓人放鬆身心。</span>
+        </div>
+        <div class="horizontal-item">
+            <img src="https://picsum.photos/id/1018/1600/900" alt="river">
+            <span>沿著河邊漫步，水面映照著天空的雲彩，時間彷彿靜止。</span>
+        </div>
+        <div class="horizontal-item">
+            <img src="https://picsum.photos/id/1020/1600/900" alt="beach">
+            <span>海邊嬉戲，陽光明媚，沙灘上的笑聲把煩惱帶走。</span>
+        </div>
+        <div class="horizontal-item">
+            <img src="https://picsum.photos/id/1024/1600/900" alt="night">
+            <span>夜晚沙灘，星空璀璨，旅程結束，但美好回憶永留心中。</span>
+        </div>
+    </div>
+</div>
+
+<!-- 每張圖片對應的大段文字說明 -->
+<div class="text-section" style="background-color:#111;">
+    <p>城市日落的街道燈光點亮夜晚，旅程的第一步帶著期待與興奮，步入充滿活力的城市街道。</p>
+    <p>穿過公園，綠意盎然，微風吹過臉頰，鳥鳴聲環繞四周，身心完全放鬆，感受自然的溫暖。</p>
+    <p>沿著河邊漫步，水面倒映天空的雲彩與夕陽，彷彿時間停止，只有自然與自己對話。</p>
+    <p>來到海邊，陽光灑在沙灘上，海浪拍打腳邊，心情愉快、自由無拘，享受每一刻當下。</p>
+    <p>夜晚沙灘，星空璀璨，旅程畫下句點，但這段美好回憶將永遠留存在心中，期待下一次的冒險。</p>
+</div>
+
+<div class="footer-section">©as07_r12227106</div>
+
+<script>
+$(document).ready(function(){
+    const $scrollContainer = $(".scroll-container");
+    const $horizontalSection = $(".horizontal-section");
+    const $images = $(".horizontal-item img");
+    const $texts = $(".horizontal-item span");
+    const $banner = $(".banner");
+
+    const containerOffsetTop = $scrollContainer.offset().top;
+    const containerHeight = $scrollContainer.height() - $(window).height();
+    const maxHorizontalScroll = $horizontalSection.outerWidth() - $(window).width();
+
+    // 建立星星
+    const starCount = 150;
+    for(let i=0;i<starCount;i++){
+        const star = $('<div class="star"></div>');
+        star.css({
+            top: Math.random()*100+'%',
+            left: Math.random()*100+'%',
+            width: Math.random()*3+1+'px',
+            height: Math.random()*3+1+'px',
+            animationDuration: (Math.random()*3+2)+'s'
+        });
+        $('#stars').append(star);
+    }
+
+    $(window).on("scroll", function(){
+        const scrolled = $(window).scrollTop();
+        let scrollPercentage = 0;
+        if(scrolled > containerOffsetTop && scrolled < containerOffsetTop + containerHeight){
+            scrollPercentage = (scrolled - containerOffsetTop) / containerHeight;
+        } else if(scrolled >= containerOffsetTop + containerHeight){
+            scrollPercentage = 1;
+        }
+
+        // 封面 Banner 動態
+        $banner.css({
+            transform: `scale(${1 + scrollPercentage*0.05})`,
+            filter: `brightness(${1 - scrollPercentage*0.1})`
+        });
+
+        // 水平滑動
+        const horizontalScroll = scrollPercentage * maxHorizontalScroll;
+        $horizontalSection.css("transform", `translateX(-${horizontalScroll}px)`);
+
+        // 濾鏡變化
+        const hue = scrollPercentage * 360;          
+        const brightness = 0.4 + 0.8*scrollPercentage;
+        const contrast = 0.6 + 0.7*scrollPercentage;
+        const saturate = 0.7 + 0.6*scrollPercentage;
+        $images.css("filter", `hue-rotate(${hue}deg) brightness(${brightness}) contrast(${contrast}) saturate(${saturate})`);
+
+        // 文字淡入淡出 + Parallax 微動
+        $texts.each(function(index){
+            const start = index*0.15; 
+            const end = start + 0.2;  
+            let opacity = 0;
+            if(scrollPercentage >= start && scrollPercentage <= end){
+                opacity = (scrollPercentage-start)/(end-start);
+            } else if(scrollPercentage > end && scrollPercentage < start+0.35){
+                opacity = 1 - (scrollPercentage-end)/(0.15);
+            }
+            $(this).css({
+                'opacity': opacity,
+                'transform': `translateY(${(0.5-opacity)*50}px)` // 微浮動
+            });
+        });
+    });
+});
+</script>
+
+</body>
+</html>
