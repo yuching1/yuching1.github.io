@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>台灣感性 Landing Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css' rel='stylesheet' />
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body, html { font-family:'Noto Sans TC', sans-serif; background-color: rgb(233,217,194); overflow-x:hidden; }
+
+    header {
+      position: fixed; top:0; width:100%; background: rgba(236,199,109,0.95); padding:15px;
+      display:flex; justify-content:center; gap:30px; z-index:100; backdrop-filter: blur(10px);
+    }
+    header div { cursor:pointer; font-weight:bold; font-size:16px; transition:color 0.3s; }
+    header div:hover { color: rgb(101,132,101); }
+
+    #map-section, #map {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+    }
+
+    #scroll-hint {
+      position:absolute; bottom:40px; left:50%; transform:translateX(-50%);
+      color:white; background: rgba(101,132,101,0.9); padding:12px 24px; border-radius:20px;
+      font-weight:600; z-index:20; animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%,100%{transform:translateX(-50%) translateY(0);}
+      50%{transform:translateX(-50%) translateY(-10px);}
+    }
+
+    section.next-section {
+      height:100vh; background-color: rgb(236,199,109);
+      display:flex; align-items:center; justify-content:center;
+      font-size:2.5rem; font-weight:bold; color: rgb(101,132,101);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>序章</div>
+    <div>感性生成的地方</div>
+    <div>審美差異與對話</div>
+    <div>再生與未來可能</div>
+    <div>結語</div>
+  </header>
+
+  <section id="map-section">
+    <div id="map"></div>
+    <div id="scroll-hint">⬇ 向下滾動探索台灣</div>
+  </section>
+
+  <section class="next-section">
+    下一個段落：感性生成的地方
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js'></script>
+
+  <script>
+    // 替換成你的 Mapbox Token
+    mapboxgl.accessToken = 'pk.eyJ1IjoicjEyMjI3MTA2IiwiYSI6ImNtaHJneXdqbDBxbjkyaXM3bnJiOTFraHcifQ.BZIX8VBFwjl65YN9CiM6Hw';
+
+    const map = new mapboxgl.Map({
+      container:'map',
+      style:'mapbox://styles/mapbox/streets-v12',
+      center:[120.9,23.8],
+      zoom:6.2
+    });
+
+    const locations = {
+      north: { coords:[121.5654,25.0330], img:'images/taipei.jpg' },
+      central: { coords:[120.6736,24.1477], img:'images/taichung.jpg' },
+      south: { coords:[120.2513,22.9908], img:'images/tainan.jpg' },
+      east: { coords:[121.6015,23.9937], img:'images/hualien.jpg' },
+      island: { coords:[119.5793,23.5711], img:'images/penghu.jpg' }
+    };
+
+    // 建立 Marker 並存放元素給動畫用
+    const markers = {};
+    function createMarkers() {
+      for (const key in locations) {
+        const el = document.createElement('img');
+        el.src = locations[key].img;
+        el.style.width = '220px';
+        el.style.height = '147px';
+        el.style.border = '5px solid rgb(101,132,101)';
+        el.style.borderRadius = '12px';
+        el.style.boxShadow = '0 10px 30px rgba(0,0,0,0.4)';
+        el.style.objectFit = 'cover';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(50px) scale(0.8)';
+
+        new mapboxgl.Marker(el).setLngLat(locations[key].coords).addTo(map);
+        markers[key] = el;
+      }
+    }
+
+    window.addEventListener('load', () => {
+      map.resize(); // 確保地圖顯示
+
+      createMarkers();
+
+      // 隱藏滾動提示
+      setTimeout(()=>{document.getElementById('scroll-hint').style.opacity='0';},3000);
+
+      // GSAP 滾動動畫
+      gsap.registerPlugin(ScrollTrigger);
+
+      ScrollTrigger.create({
+        trigger:'#map-section',
+        start:'top top',
+        end:'bottom top',
+        scrub:true,
+        pin:true,
+        onUpdate: self => {
+          const progress = self.progress;
+          // 地圖放大
+          const zoom = progress < 0.4 ? 6.2 + (progress/0.4)*3.5 : 9.7;
+          map.setZoom(zoom);
+
+          // 照片動畫 20%~100%
+          const t = Math.max((progress-0.2)/(1-0.2),0);
+          const keys = Object.keys(markers);
+          keys.forEach((key,index)=>{
+            const el = markers[key];
+            const appearStart = index / keys.length;
+            const appearEnd = (index + 0.8)/keys.length;
+
+            if(t >= appearStart){
+              const localT = Math.min((t - appearStart)/(appearEnd - appearStart),1);
+              el.style.opacity = localT;
+              el.style.transform = `translateY(${50*(1-localT)}px) scale(${0.8 + 0.2*localT})`;
+            }
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
