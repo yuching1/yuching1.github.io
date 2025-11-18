@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>日本旅遊小記</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+    .landing {
+      width: 100%; height: 100vh;
+      background: url('images/p1.jpg') center/cover no-repeat;
+      display: flex; justify-content: center; align-items: center;
+      color: white; font-size: 3rem; font-weight: bold;
+      text-shadow: 0 0 10px rgba(0,0,0,0.6);
+    }
+    .onboarding {
+      display: flex; height: 100vh;
+    }
+    .videos {
+      width: 50%; display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 10px; padding: 20px;
+    }
+    .videos video { width: 100%; height: 100%; object-fit: cover; }
+    .text { width: 50%; padding: 40px; font-size: 1.2rem; }
+
+    .chapter {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .chapter video {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      z-index: -1;
+    }
+    .chapter .scroll-text {
+      position: sticky;
+      top: 40vh;
+      font-size: 2rem;
+      color: white;
+      text-shadow: 0 0 10px rgba(0,0,0,0.7);
+      padding: 20px;
+    }
+  </style>
+<script>
+// Reset and reapply typing effect correctly
+function typeWriterEffect(element) {
+  const text = element.getAttribute('data-text');
+  let index = 0;
+  element.textContent = '';
+  const interval = setInterval(() => {
+    element.textContent += text.charAt(index);
+    index++;
+    if (index >= text.length) clearInterval(interval);
+  }, 80); // slow typing
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      if (!el.classList.contains('typed')) {
+        el.classList.add('typed');
+        typeWriterEffect(el);
+      }
+    }
+  });
+}, { threshold: 0.4 });
+
+window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.typewriter').forEach(el => {
+    el.setAttribute('data-text', el.textContent.trim());
+    el.textContent = '';
+    observer.observe(el);
+  });
+});
+</script>
+</head>
+<body>
+  <!-- Landing Page -->
+  <section class="landing">日本旅遊小記</section>
+
+  <!-- Onboarding Page -->
+  <section class="onboarding" style="background:url('images/p2.jpg') center/cover no-repeat;">
+    <div class="videos">
+      <video src="images/v1.MP4" autoplay loop muted></video>
+      <video src="images/v2.MP4" autoplay loop muted></video>
+      <video src="images/v3.MP4" autoplay loop muted></video>
+      <video src="images/v4.MP4" autoplay loop muted></video>
+    </div>
+    <div class="text">
+      <h2>旅途片段</h2>
+      <p>在旅行的漫漫途中，總有一些畫面會悄悄停留，比其他時刻更深、更久。
+         街角的風、餐桌升起的熱氣、電車駛過時的鐵軌聲、人潮裡擦肩而過的氣味——
+         那些看似微不足道的瞬間，卻像被命運輕輕點亮的光點，藏著一種說不出的溫度。
+         這四支短片並非旅程的全部，
+         卻像是一扇通往回憶的門：
+         帶你走進日本的日常節奏、街道的細膩層次、
+         以及那些只在親眼見過後才會懂的溫柔流動。</p>
+    </div>
+  </section>
+
+  <!-- Core Narrative Chapters -->
+<style>
+  .typewriter { border-right: 2px solid white; white-space: nowrap; overflow: hidden; animation: typing 4s steps(40, end), blink .8s infinite; }
+  @keyframes typing { from { width: 0; } to { width: 100%; } }
+  @keyframes blink { 50% { border-color: transparent; } }
+</style>
+
+<section class="chapter">
+  <video src="images/v1.MP4" autoplay loop muted></video>
+  <div class="scroll-text">
+    <div style="display:flex; gap:40px; align-items:flex-start;">
+      <div style="font-size:2rem; font-weight:bold;">Chapter 1 — 鰻魚飯與暖意</div>
+      <div class="typewriter" data-init="1" style="max-width:40%; font-size:1.2rem; line-height:1.6; white-space:normal;">
+        川越的小巷靜靜地展開在午後的陽光裡。炭火的香氣混著微涼的風，鰻魚飯入口的那一瞬間，仿佛所有旅途的疲憊都被溫柔融化。一碗鰻魚飯，一座城市的體溫。
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter">
+  <video src="images/v2.MP4" autoplay loop muted></video>
+  <div class="scroll-text">
+    <div style="display:flex; gap:40px; align-items:flex-start;">
+      <div style="font-size:2rem; font-weight:bold;">Chapter 2 — 復古火車與風的聲音</div>
+      <div class="typewriter" data-init="1" style="max-width:40%; font-size:1.2rem; line-height:1.6; white-space:normal;">
+        流鐮的街道寧靜得像是凝結在時間之外。復古火車靠近時的轟隆聲像被遺忘的記憶再次甦醒。海風吹拂，鐵軌閃著光，旅途在這一刻被延伸得更遠。
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter">
+  <video src="images/v3.MP4" autoplay loop muted></video>
+  <div class="scroll-text">
+    <div style="display:flex; gap:40px; align-items:flex-start;">
+      <div style="font-size:2rem; font-weight:bold;">Chapter 3 — 澀谷的夜與閃爍的步伐</div>
+      <div class="typewriter" data-init="1" style="max-width:40%; font-size:1.2rem; line-height:1.6; white-space:normal;">
+        澀谷的夜色是跳動的。霓虹在玻璃間折射，行人步伐交錯，像是一首永不停歇的城市詩。置身人潮中央，我仿佛也被這座城市的光點點亮。
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter">
+  <video src="images/v4.MP4" autoplay loop muted></video>
+  <div class="scroll-text">
+    <div style="display:flex; gap:40px; align-items:flex-start;">
+      <div style="font-size:2rem; font-weight:bold;">Chapter 4 — 花火與願望</div>
+      <div class="typewriter" data-init="1" style="max-width:40%; font-size:1.2rem; line-height:1.6; white-space:normal;">
+        花火在夜空綻放的瞬間，時間彷彿變得柔軟。每一道光芒像是一個短暫卻真實的願望，被風帶往遠方。夏天的氣味、夜色的溫度，都在那一刻悄悄貼近心口。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Outro Section -->
+<section class="outro" style="height:100vh; background:url('images/p3.jpg') center/cover no-repeat; display:flex; justify-content:center; align-items:center; padding:40px;">
+  <div style="background:rgba(255,255,255,0.45); padding:40px; border-radius:20px; max-width:60%; font-size:1.4rem; line-height:1.8; color:#333; box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+    若未來的某個季節，你我再次踏上這片土地，
+    <br><br>
+    也許又能拾起更多散落在街角的故事。
+  </div>
+</section>
+
+<footer style="text-align:center; padding:20px; color:#888; background:#f3f3f3; font-size:0.9rem;">©as08_r12227106</footer>
+
+</body>
+</html>
