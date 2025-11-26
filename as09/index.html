@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>互動式地球儀</title>
+<script src="https://unpkg.com/globe.gl"></script>
+<script src="https://unpkg.com/three"></script>
+<style>
+html, body {margin:0;height:100%;overflow:hidden;background:#000;font-family:Arial,sans-serif;}
+#globe {width:100%;height:100%;}
+#controls {
+  position:absolute;
+  top:20px;
+  right:20px;
+  background:rgba(0,0,0,0.7);
+  padding:15px;
+  border-radius:10px;
+  color:#fff;
+  z-index:100;
+}
+#controls button {
+  display:block;
+  width:100%;
+  margin:8px 0;
+  padding:10px;
+  background:#2196F3;
+  color:#fff;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  font-size:14px;
+  transition:background 0.3s;
+}
+#controls button:hover {
+  background:#1976D2;
+}
+#info {
+  position:absolute;
+  bottom:50px;
+  left:20px;
+  background:rgba(0,0,0,0.7);
+  padding:10px 15px;
+  border-radius:8px;
+  color:#fff;
+  font-size:14px;
+}
+#footer {
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  background:rgba(0,0,0,0.8);
+  color:#fff;
+  text-align:center;
+  padding:10px;
+  font-size:12px;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+.modal {
+  display:none;
+  position:fixed;
+  z-index:1000;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.8);
+  justify-content:center;
+  align-items:center;
+}
+.modal-content {
+  background:#1a1a1a;
+  padding:30px;
+  border-radius:15px;
+  max-width:500px;
+  color:#fff;
+  box-shadow:0 4px 20px rgba(0,0,0,0.5);
+}
+.modal-content h2 {
+  margin-top:0;
+  color:#2196F3;
+}
+.modal-content ul {
+  text-align:left;
+  line-height:1.8;
+}
+.modal-content button {
+  margin-top:20px;
+  padding:10px 30px;
+  background:#2196F3;
+  color:#fff;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  font-size:16px;
+}
+.modal-content button:hover {
+  background:#1976D2;
+}
+</style>
+</head>
+<body>
+<div id="globe"></div>
+
+<div id="controls">
+  <button id="autoRotate">🔄 自動旋轉</button>
+  <button id="addCities">🏙️ 顯示城市</button>
+  <button id="addArcs">✈️ 航線動畫</button>
+  <button id="changeAtmosphere">🌈 變換大氣層</button>
+  <button id="randomView">🎲 隨機視角</button>
+  <button id="resetView">🏠 重置視角</button>
+</div>
+
+<div id="info">點擊右側按鈕探索功能！</div>
+
+<div id="footer">©as09_r12227106</div>
+
+<div id="welcomeModal" class="modal">
+  <div class="modal-content">
+    <h2>🌍 歡迎使用互動式地球儀！</h2>
+    <ul>
+      <li><strong>🔄 自動旋轉</strong> - 讓地球自動緩慢旋轉</li>
+      <li><strong>🏙️ 顯示城市</strong> - 在地球上標記主要城市</li>
+      <li><strong>✈️ 航線動畫</strong> - 顯示城市間的飛行航線</li>
+      <li><strong>🌈 變換大氣層</strong> - 改變地球的大氣層顏色</li>
+      <li><strong>🎲 隨機視角</strong> - 飛到地球上的隨機位置</li>
+      <li><strong>🏠 重置視角</strong> - 回到初始視角</li>
+    </ul>
+    <p style="margin-top:20px;">用滑鼠拖曳可以旋轉地球，滾輪可以縮放！</p>
+    <button id="closeModal">開始探索</button>
+  </div>
+</div>
+
+<script>
+// 初始化地球
+const globe = Globe()(document.getElementById('globe'))
+  .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+  .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
+  .atmosphereColor('lightskyblue')
+  .atmosphereAltitude(0.2);
+
+const controls = globe.controls();
+controls.enableRotate = true;
+controls.enableZoom = true;
+controls.enablePan = false;
+controls.enableDamping = true;
+controls.dampingFactor = 0.1;
+controls.autoRotate = false;
+controls.autoRotateSpeed = 0.5;
+
+// 顯示歡迎訊息
+const modal = document.getElementById('welcomeModal');
+modal.style.display = 'flex';
+
+document.getElementById('closeModal').addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+// 主要城市資料
+const cities = [
+  {lat: 25.0330, lng: 121.5654, name: '台北', size: 0.5, color: '#ff0000'},
+  {lat: 40.7128, lng: -74.0060, name: '紐約', size: 0.6, color: '#00ff00'},
+  {lat: 51.5074, lng: -0.1278, name: '倫敦', size: 0.5, color: '#0000ff'},
+  {lat: 35.6762, lng: 139.6503, name: '東京', size: 0.6, color: '#ffff00'},
+  {lat: -33.8688, lng: 151.2093, name: '雪梨', size: 0.5, color: '#ff00ff'},
+  {lat: 48.8566, lng: 2.3522, name: '巴黎', size: 0.5, color: '#00ffff'},
+  {lat: 1.3521, lng: 103.8198, name: '新加坡', size: 0.4, color: '#ffa500'},
+  {lat: 55.7558, lng: 37.6173, name: '莫斯科', size: 0.5, color: '#ff69b4'}
+];
+
+let citiesVisible = false;
+let arcsVisible = false;
+let atmosphereColors = ['lightskyblue', 'lightgreen', 'pink', 'gold', 'violet'];
+let currentAtmosphere = 0;
+
+// 自動旋轉
+document.getElementById('autoRotate').addEventListener('click', () => {
+  controls.autoRotate = !controls.autoRotate;
+  document.getElementById('info').textContent = controls.autoRotate ? '自動旋轉已啟動' : '自動旋轉已停止';
+});
+
+// 顯示城市
+document.getElementById('addCities').addEventListener('click', () => {
+  if (!citiesVisible) {
+    globe.pointsData(cities)
+      .pointAltitude(0.01)
+      .pointRadius('size')
+      .pointColor('color')
+      .pointLabel('name');
+    document.getElementById('info').textContent = '城市標記已顯示';
+  } else {
+    globe.pointsData([]);
+    document.getElementById('info').textContent = '城市標記已隱藏';
+  }
+  citiesVisible = !citiesVisible;
+});
+
+// 航線動畫
+document.getElementById('addArcs').addEventListener('click', () => {
+  if (!arcsVisible) {
+    const arcs = [
+      {startLat: 25.0330, startLng: 121.5654, endLat: 40.7128, endLng: -74.0060},
+      {startLat: 40.7128, startLng: -74.0060, endLat: 51.5074, endLng: -0.1278},
+      {startLat: 51.5074, startLng: -0.1278, endLat: 35.6762, endLng: 139.6503},
+      {startLat: 35.6762, startLng: 139.6503, endLat: 1.3521, endLng: 103.8198},
+      {startLat: 1.3521, startLng: 103.8198, endLat: -33.8688, endLng: 151.2093}
+    ];
+    globe.arcsData(arcs)
+      .arcColor(() => ['#ff0000', '#00ff00'])
+      .arcDashLength(0.4)
+      .arcDashGap(0.2)
+      .arcDashAnimateTime(2000)
+      .arcStroke(0.5);
+    document.getElementById('info').textContent = '航線動畫已啟動';
+  } else {
+    globe.arcsData([]);
+    document.getElementById('info').textContent = '航線動畫已停止';
+  }
+  arcsVisible = !arcsVisible;
+});
+
+// 變換大氣層
+document.getElementById('changeAtmosphere').addEventListener('click', () => {
+  currentAtmosphere = (currentAtmosphere + 1) % atmosphereColors.length;
+  globe.atmosphereColor(atmosphereColors[currentAtmosphere]);
+  document.getElementById('info').textContent = '大氣層顏色已變更';
+});
+
+// 隨機視角
+document.getElementById('randomView').addEventListener('click', () => {
+  const randomLat = Math.random() * 180 - 90;
+  const randomLng = Math.random() * 360 - 180;
+  globe.pointOfView({lat: randomLat, lng: randomLng, altitude: 2}, 1000);
+  document.getElementById('info').textContent = `飛往 ${randomLat.toFixed(1)}°, ${randomLng.toFixed(1)}°`;
+});
+
+// 重置視角
+document.getElementById('resetView').addEventListener('click', () => {
+  globe.pointOfView({lat: 0, lng: 0, altitude: 2.5}, 1000);
+  document.getElementById('info').textContent = '視角已重置';
+});
+
+// 初始視角
+globe.pointOfView({lat: 25, lng: 121, altitude: 2.5});
+</script>
+</body>
+</html>
