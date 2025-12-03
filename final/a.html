@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <title>臺灣感性：當「雜亂的溫柔」成為濾鏡</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Mapbox -->
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{height:auto}
+    body{
+      font-family: 'Noto Sans TC', sans-serif;
+      background:#f5f0e8;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+
+    /* ---------- INTRO grid 6x4 ---------- */
+    #intro-container{
+      position:fixed; inset:0;
+      width:100vw;height:100vh;
+      z-index:99999;
+      perspective:1600px;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap:0;
+      background:#000;
+    }
+    .intro-slice{
+      position:relative;
+      height:100%;
+      width:100%;
+      transform-origin:center center;
+      transform-style: preserve-3d;
+      background-image: url('images/intro.jpg');
+      background-repeat:no-repeat;
+      background-size:600% 400%;
+      background-position:50% 50%;
+    }
+    .intro-slice::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image: url('images/intro1.jpg');
+      background-repeat:no-repeat;
+      background-size:cover;
+      background-attachment:fixed;
+      background-position:center;
+      transform: rotateY(180deg);
+      backface-visibility:visible;
+    }
+    /* 為每個格子設定正確的背景位置 - 正面 (6列4行) */
+    .intro-slice:nth-child(1) { background-position: 0% 0%; }
+    .intro-slice:nth-child(2) { background-position: 20% 0%; }
+    .intro-slice:nth-child(3) { background-position: 40% 0%; }
+    .intro-slice:nth-child(4) { background-position: 60% 0%; }
+    .intro-slice:nth-child(5) { background-position: 80% 0%; }
+    .intro-slice:nth-child(6) { background-position: 100% 0%; }
+    
+    .intro-slice:nth-child(7) { background-position: 0% 33.33%; }
+    .intro-slice:nth-child(8) { background-position: 20% 33.33%; }
+    .intro-slice:nth-child(9) { background-position: 40% 33.33%; }
+    .intro-slice:nth-child(10) { background-position: 60% 33.33%; }
+    .intro-slice:nth-child(11) { background-position: 80% 33.33%; }
+    .intro-slice:nth-child(12) { background-position: 100% 33.33%; }
+    
+    .intro-slice:nth-child(13) { background-position: 0% 66.67%; }
+    .intro-slice:nth-child(14) { background-position: 20% 66.67%; }
+    .intro-slice:nth-child(15) { background-position: 40% 66.67%; }
+    .intro-slice:nth-child(16) { background-position: 60% 66.67%; }
+    .intro-slice:nth-child(17) { background-position: 80% 66.67%; }
+    .intro-slice:nth-child(18) { background-position: 100% 66.67%; }
+    
+    .intro-slice:nth-child(19) { background-position: 0% 100%; }
+    .intro-slice:nth-child(20) { background-position: 20% 100%; }
+    .intro-slice:nth-child(21) { background-position: 40% 100%; }
+    .intro-slice:nth-child(22) { background-position: 60% 100%; }
+    .intro-slice:nth-child(23) { background-position: 80% 100%; }
+    .intro-slice:nth-child(24) { background-position: 100% 100%; }
+    
+    /* 背面 - intro2 的對應位置 */
+    .intro-slice:nth-child(1)::after { background-position: 0% 0%; }
+    .intro-slice:nth-child(2)::after { background-position: 20% 0%; }
+    .intro-slice:nth-child(3)::after { background-position: 40% 0%; }
+    .intro-slice:nth-child(4)::after { background-position: 60% 0%; }
+    .intro-slice:nth-child(5)::after { background-position: 80% 0%; }
+    .intro-slice:nth-child(6)::after { background-position: 100% 0%; }
+    
+    .intro-slice:nth-child(7)::after { background-position: 0% 33.33%; }
+    .intro-slice:nth-child(8)::after { background-position: 20% 33.33%; }
+    .intro-slice:nth-child(9)::after { background-position: 40% 33.33%; }
+    .intro-slice:nth-child(10)::after { background-position: 60% 33.33%; }
+    .intro-slice:nth-child(11)::after { background-position: 80% 33.33%; }
+    .intro-slice:nth-child(12)::after { background-position: 100% 33.33%; }
+    
+    .intro-slice:nth-child(13)::after { background-position: 0% 66.67%; }
+    .intro-slice:nth-child(14)::after { background-position: 20% 66.67%; }
+    .intro-slice:nth-child(15)::after { background-position: 40% 66.67%; }
+    .intro-slice:nth-child(16)::after { background-position: 60% 66.67%; }
+    .intro-slice:nth-child(17)::after { background-position: 80% 66.67%; }
+    .intro-slice:nth-child(18)::after { background-position: 100% 66.67%; }
+    
+    .intro-slice:nth-child(19)::after { background-position: 0% 100%; }
+    .intro-slice:nth-child(20)::after { background-position: 20% 100%; }
+    .intro-slice:nth-child(21)::after { background-position: 40% 100%; }
+    .intro-slice:nth-child(22)::after { background-position: 60% 100%; }
+    .intro-slice:nth-child(23)::after { background-position: 80% 100%; }
+    .intro-slice:nth-child(24)::after { background-position: 100% 100%; }
+
+    /* overlay that becomes the background after intro tiles flip */
+    #intro-bg-overlay{
+      position:fixed; inset:0;
+      background-image: url('images/intro1.jpg');
+      background-repeat:no-repeat;
+      background-size:cover;
+      background-position:center;
+      z-index:90000;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .8s ease;
+    }
+    
+    /* Title shown after intro flip */
+    #intro-title{
+      position:fixed; inset:0;
+      z-index:99998;
+      display:flex; align-items:center; justify-content:center;
+      pointer-events:none;
+      opacity:0;
+    }
+    #intro-title h1{
+      font-family:'Noto Serif TC', serif;
+      font-size:5rem;
+      color:#2d3319;
+      letter-spacing:.2em;
+      text-align:center;
+      font-weight:700;
+    }
+
+    /* ---------- Header (keeps on top) ---------- */
+    header{
+      position:fixed; left:0; right:0; top:0;
+      padding:25px 50px;
+      display:flex; justify-content:space-between; align-items:center;
+      z-index:100;
+      transition: background .3s;
+    }
+    header .logo{
+      font-family:'Noto Serif TC', serif;
+      font-weight:700; font-size:1.4rem;
+      color:#2d3319;
+      letter-spacing:.1em;
+    }
+    header nav{ display:flex; gap:35px; }
+    header nav div{ cursor:pointer; color:rgba(45,51,25,0.7); font-size:.95rem; letter-spacing:.05em; }
+
+    header.scrolled{ background: rgba(245,240,232,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+
+    /* ---------- Map Section (full screen) ---------- */
+    #map-section{ width:100%; height:100vh; position:relative; }
+    #map{ width:100%; height:100%; }
+    #map-overlay{
+      position:absolute; inset:0;
+      background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.45) 100%);
+      opacity:0; transition:opacity .8s; pointer-events:none; z-index:5;
+    }
+    #map-overlay.show{ opacity:1; }
+
+    .photo-container{
+      position:absolute; left:50%; top:50%;
+      transform:translate(-50%,-50%);
+      width:500px; height:350px;
+      z-index:10; opacity:0; pointer-events:none;
+      transition: opacity .8s, transform .8s;
+      overflow:hidden;
+    }
+    .photo-container.show{ opacity:1; }
+    .photo-container img{ width:100%; height:100%; object-fit:cover; display:block; box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+    .photo-caption{
+      position:absolute; bottom:0; left:0; right:0;
+      background:linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      color:#fff; padding:20px; text-align:left;
+      z-index:5;
+    }
+    .photo-caption h3{ font-size:1.2rem; margin-bottom:4px; font-weight:600; }
+    .photo-caption p{ font-size:0.9rem; opacity:0.9; }
+
+    #scroll-indicator{ position:absolute; left:50%; bottom:40px; transform:translateX(-50%); z-index:30; color:#fff; display:flex; flex-direction:column; align-items:center; gap:8px; }
+    #scroll-indicator .line{ width:1px; height:40px; background:#fff; animation:scrollLine 2s infinite; }
+    @keyframes scrollLine{0%,100%{opacity:0;transform:translateY(-20px)}50%{opacity:1;transform:translateY(0)}}
+
+    /* ---------- Chapter Intro ---------- */
+    .chapter-intro{ height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:0 50px; background:#f5f0e8; }
+    .chapter-intro h1{ font-family:'Noto Serif TC', serif; font-size:4rem; color:#2d3319; margin-bottom:20px; letter-spacing:.15em; }
+    .chapter-intro p{ max-width:800px; font-size:1.3rem; color:rgba(45,51,25,0.7); line-height:2; font-weight:300; }
+
+    /* ---------- Chapter Cover (full-screen image) ---------- */
+    .chapter-cover{
+      width:100%; height:100vh;
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+      background-attachment:fixed;
+      position:relative;
+      display:flex; align-items:center; justify-content:center;
+    }
+    #chapter1{
+      background-image: url('./images/c1.jpg');
+      background-color: #f5f0e8;
+    }
+    .chapter-cover-overlay{
+      position:absolute; inset:0;
+      background:rgba(0,0,0,0.4);
+      z-index:1;
+    }
+    .chapter-cover-content{
+      position:relative; z-index:2;
+      text-align:center; color:#fff;
+    }
+    .chapter-cover-content h1{
+      font-family:'Noto Serif TC', serif;
+      font-size:3.5rem;
+      margin-bottom:20px;
+      letter-spacing:.15em;
+      font-weight:700;
+    }
+    .chapter-cover-content p{
+      font-size:1.8rem;
+      font-weight:300;
+      letter-spacing:.1em;
+    }
+
+    /* ---------- Timeline (horizontal scroll via GSAP) ---------- */
+    #timeline-wrapper{ 
+      width:100%; height:auto; min-height:100vh; 
+      position:relative; overflow:hidden; 
+      background:#f5f0e8; 
+      padding: 80px 0;
+    }
+    .timeline-section { padding: 40px 0; }
+    .timeline-header{ text-align:center; margin-bottom:60px; padding: 0 50px; }
+    .timeline-header h2{ 
+      font-family:'Noto Serif TC', serif; 
+      font-size:2.8rem; 
+      color:#2d3319; 
+      margin-bottom:15px;
+      letter-spacing:.1em;
+    }
+    .timeline-header p{ 
+      font-size:1.1rem; 
+      color:rgba(45,51,25,0.6); 
+      font-weight:300;
+    }
+
+    #timeline-section { 
+      height:auto; 
+      display:flex; 
+      align-items:center; 
+      will-change:transform; 
+      padding: 40px 40px;
+      gap: 30px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      overflow-y: hidden;
+    }
+
+    .timeline-item { 
+      flex: 0 0 calc(25% - 22.5px); 
+      min-width: 280px;
+      display:flex; 
+      flex-direction:column; 
+    }
+
+    .timeline-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform .3s, box-shadow .3s;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .timeline-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+
+    .timeline-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .timeline-text {
+      padding: 25px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .timeline-text h3 {
+      margin: 0 0 10px 0;
+      font-size: 1.3rem;
+      font-family: 'Noto Serif TC', serif;
+      color: #2d3319;
+      font-weight: 600;
+    }
+
+    .timeline-year {
+      font-size: 0.95rem;
+      color: rgba(101,132,101,0.8);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .timeline-text p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: rgba(45,51,25,0.75);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .source {
+      font-size: 0.8rem;
+      color: rgba(45,51,25,0.5);
+      font-style: italic;
+      margin-top: 10px;
+    }
+
+    .timeline-footer {
+      text-align: center;
+      margin-top: 40px;
+      color: rgba(45,51,25,0.5);
+      font-size: 0.95rem;
+    }
+
+    .scroll-hint{ 
+      position:fixed; 
+      bottom:50px; 
+      left:50%; 
+      transform:translateX(-50%); 
+      z-index:50; 
+      color:rgba(45,51,25,0.6); 
+      font-size:.95rem; 
+      display:flex; 
+      gap:10px; 
+      align-items:center; 
+    }
+    .scroll-hint .arrow{ animation: slideRight 2s infinite; }
+    @keyframes slideRight{0%,100%{transform:translateX(0);opacity:.5}50%{transform:translateX(10px);opacity:1}}
+
+    /* ---------- Awakening section kept minimal (no hashtag here) ---------- */
+    #awakening{ min-height:100vh; padding:120px 50px; text-align:center; background: linear-gradient(135deg, rgba(236,199,109,0.08), rgba(245,240,232,1)); }
+    #awakening h2{ font-family:'Noto Serif TC', serif; font-size:3rem; color:#2d3319; margin-bottom:20px; }
+    #awakening p{ max-width:900px; margin: 0 auto 40px; color:rgba(45,51,25,0.75); line-height:1.9; }
+
+    /* ---------- Hashtag page (separate) ---------- */
+    #hashtag-page{ min-height:100vh; position:relative; background:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:80px 20px; }
+    #hashtag-container{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+    .hashtag{ position:absolute; color:#2d3319; font-weight:700; white-space:nowrap; pointer-events:none; text-shadow: 0 2px 8px rgba(255,255,255,0.4); }
+
+    /* ---------- Reels grid ---------- */
+    #reels-grid{ width:90%; max-width:1100px; margin:80px auto; display:grid; grid-template-columns:repeat(4,1fr); gap:24px; padding-bottom:120px; }
+    .reel-item{ border-radius:12px; overflow:hidden; background:#e6e6e6; position:relative; aspect-ratio:9/16; box-shadow:0 8px 25px rgba(0,0,0,0.12); cursor:pointer; }
+    .reel-item video{ width:100%; height:100%; object-fit:cover; display:block; }
+    .reel-overlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.95); font-size:2.2rem; pointer-events:none; }
+
+    /* ---------- Footer / sections ---------- */
+    .chapter-section{ min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:100px 50px; text-align:center; }
+    .chapter-section h2{ font-family:'Noto Serif TC', serif; font-size:3.5rem; color:#2d3319; margin-bottom:24px; }
+    .chapter-section p{ max-width:900px; color:rgba(45,51,25,0.75); line-height:1.9; }
+
+    /* ---------- Text Section (詳細說明) ---------- */
+    .text-section {
+      padding: 80px 50px;
+      background: #f5f0e8;
+      max-width: 1000px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    .text-section h2 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 2.8rem;
+      color: #2d3319;
+      margin-bottom: 30px;
+      letter-spacing: 0.1em;
+    }
+
+    .text-section h3 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.6rem;
+      color: #2d3319;
+      margin-top: 40px;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .text-section p {
+      font-size: 1rem;
+      color: rgba(45,51,25,0.8);
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    .text-section em {
+      color: rgba(45,51,25,0.6);
+      display: block;
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+
+    .text-section ul,
+    .text-section ol {
+      margin: 20px 0 20px 40px;
+      color: rgba(45,51,25,0.75);
+    }
+
+    .text-section li {
+      margin-bottom: 12px;
+      line-height: 1.7;
+    }
+
+    /* ---------- Reflection Section (投票) ---------- */
+    .reflection-section {
+      padding: 80px 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,1), rgba(245,240,232,0.5));
+    }
+
+    .reflection-section h2 {
+      text-align: center;
+      font-family: 'Noto Serif TC', serif;
+      font-size: 2.8rem;
+      color: #2d3319;
+      margin-bottom: 60px;
+      letter-spacing: 0.1em;
+    }
+
+    .question-container {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    .question-card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+      opacity: 0;
+      transform: translateY(50px);
+      border-left: 4px solid #656b65;
+    }
+
+    .question-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .question-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    }
+
+    .question-text {
+      font-size: 1.1rem;
+      color: #2d3319;
+      margin-bottom: 25px;
+      line-height: 1.7;
+      font-weight: 500;
+    }
+
+    .vote-buttons {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .vote-buttons button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #656b65;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: background 0.2s, transform 0.2s;
+      font-family: 'Noto Sans TC', sans-serif;
+    }
+
+    .vote-buttons button:hover {
+      background-color: #505550;
+      transform: scale(1.05);
+    }
+
+    .vote-buttons button:active {
+      transform: scale(0.98);
+    }
+
+    .vote-result {
+      margin-left: 10px;
+      font-style: italic;
+      color: #656b65;
+      font-weight: 600;
+    }
+
+    /* responsive */
+    @media (max-width:900px){
+      .intro-slice{ width:25%; left:auto; }
+      .timeline-item{ min-width:80vw }
+      #reels-grid{ grid-template-columns: repeat(2,1fr) }
+      header{ padding:18px 24px }
+      .photo-container{ width:80%; height:auto; aspect-ratio:4/3 }
+      
+      .text-section { padding: 50px 25px; }
+      .text-section h2 { font-size: 2rem; }
+      .text-section h3 { font-size: 1.3rem; }
+      
+      .reflection-section { padding: 50px 15px; }
+      .reflection-section h2 { font-size: 2rem; margin-bottom: 40px; }
+      .question-card { padding: 20px; }
+      .question-text { font-size: 1rem; }
+      .vote-buttons { gap: 10px; }
+      .vote-buttons button { padding: 8px 15px; font-size: 0.85rem; }
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgb(233,217,194); 
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgb(236,199,109); 
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgb(101,132,101); 
+    }
+
+    /* Animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .typewriter-cursor::after {
+      content: '|';
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Filters & Effects */
+    .filter-korea { filter: sepia(0.3) saturate(1.2) brightness(1.1) hue-rotate(-10deg); }
+    .filter-photo { filter: contrast(1.3) brightness(0.9) grayscale(0.2); }
+    .filter-research { filter: grayscale(0.8) contrast(1.5) brightness(1.1); }
+    .filter-pop { filter: saturate(1.5) hue-rotate(10deg); }
+
+    .shutter-panel {
+      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    
+    /* Flip Card */
+    .flip-card {
+      perspective: 1000px;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      top: 0;
+      left: 0;
+    }
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Highlight Marker Animation */
+    .highlight-text {
+      background: linear-gradient(120deg, #f6e05e00 0%, #f6e05e00 100%);
+      background-repeat: no-repeat;
+      background-size: 100% 40%;
+      background-position: 0 88%;
+      transition: background-image 1s ease-in-out;
+    }
+    .highlight-text.active {
+      background-image: linear-gradient(120deg, #fcd34dcc 0%, #fcd34dcc 100%);
+    }
+    
+    /* Horizontal Scroll Hide */
+    .hide-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scroll {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Intro Specific Styles */
+    #intro-track {
+      height: 300vh;
+      background-color: rgb(233,217,194);
+    }
+    #intro-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    /* Blur effect for background during typewriter */
+    #intro-sticky .intro-layer-bg img {
+      transition: filter 0.1s ease-out;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- INTRO: 6x4 grid (24 tiles) -->
+  <div id="intro-container" aria-hidden="true">
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+    <div class="intro-slice"></div>
+  </div>
+  <!-- semi-transparent background / blur shown after intro -->
+  <div id="intro-bg-overlay" aria-hidden="true"></div>
+  
+  <!-- Title shown after intro flip -->
+  <div id="intro-title" aria-hidden="true">
+    <h1>臺灣感性</h1>
+  </div>
+
+  <!-- Header -->
+  <header id="header">
+    <div class="logo">臺灣感性</div>
+    <nav>
+      <div data-target="chapter1-intro">喚起記憶：臺灣感性的源起介紹</div>
+      <div data-target="chapter2-diff">審美濾鏡：臺灣感性的文化差異</div>
+      <div data-target="filter">後設反思：臺灣感性的自我審視</div>
+      <div data-target="epilogue">結語</div>
+    </nav>
+  </header>
+
+  <!-- ========== LANDING / MAP (original map kept) ========== -->
+  <section id="map-section">
+    <div id="map"></div>
+    <div id="map-overlay"></div>
+
+    <div class="photo-container" id="photo-taipei">
+      <img src="images/taipei.jpg" alt="台北">
+      <div class="photo-caption">
+        <h3>台北</h3>
+        <p>TAIPEI</p>
+      </div>
+    </div>
+
+    <div class="photo-container" id="photo-taichung">
+      <img src="images/taichung.jpg" alt="台中">
+      <div class="photo-caption">
+        <h3>台中</h3>
+        <p>TAICHUNG</p>
+      </div>
+    </div>
+
+    <div class="photo-container" id="photo-tainan">
+      <img src="images/tainan.jpg" alt="台南">
+      <div class="photo-caption">
+        <h3>台南</h3>
+        <p>TAINAN</p>
+      </div>
+    </div>
+
+    <div class="photo-container" id="photo-hualien">
+      <img src="images/hualien.jpg" alt="花蓮">
+      <div class="photo-caption">
+        <h3>花蓮</h3>
+        <p>HUALIEN</p>
+      </div>
+    </div>
+
+    <div id="scroll-indicator">
+      <div class="line"></div>
+      <span>SCROLL</span>
+    </div>
+  </section>
+
+
+  <!-- CHAPTER 1: Full-screen image with title -->
+  <section id="chapter1" class="chapter-cover">
+    <div class="chapter-cover-overlay"></div>
+    <div class="chapter-cover-content">
+      <h1>Chapter 1</h1>
+      <p>喚起記憶：台灣感性的源起介紹</p>
+    </div>
+  </section>
+
+  <!-- CHAPTER 1 TEXT INTRODUCTION -->
+  <section id="chapter1-intro" class="relative w-full px-6 md:px-12 overflow-hidden py-40" style="background-color: rgb(245,241,235); display: flex; align-items: center; justify-content: center;">
+    <!-- Parallax Background Layer -->
+    <div class="absolute inset-0 w-full h-full" style="background: linear-gradient(135deg, rgba(236,199,109,0.1) 0%, rgba(101,132,101,0.05) 100%); will-change: transform; z-index: -1;" id="chapter1-parallax-bg"></div>
+    
+    <!-- Decorative Lines -->
+    <div class="absolute top-20 left-0 w-32 h-1" style="background: linear-gradient(90deg, rgb(236,199,109) 0%, rgba(236,199,109,0) 100%);"></div>
+    <div class="absolute bottom-20 right-0 w-32 h-1" style="background: linear-gradient(90deg, rgba(101,132,101,0) 0%, rgb(101,132,101) 100%);"></div>
+    
+    <!-- Content with Parallax Text -->
+    <div class="max-w-3xl" style="will-change: transform; position: relative; z-index: 10;" id="chapter1-parallax-text">
+      <!-- 章節標記 -->
+      <div class="text-center mb-8">
+        <p class="text-sm md:text-base uppercase tracking-widest" style="color: rgb(101,132,101); font-weight: 600; letter-spacing: 0.2em;">CHAPTER 1</p>
+        <div class="w-16 h-1 mx-auto mt-3" style="background-color: rgb(236,199,109);"></div>
+      </div>
+      
+      <!-- 主標題 -->
+      <h2 class="text-center mb-8" style="font-family: 'Noto Serif TC', serif; font-size: 2.5rem; color: rgb(45,51,25); font-weight: 700; letter-spacing: 0.05em;">街景變化</h2>
+      
+      <!-- 段落 1 -->
+      <p class="text-base md:text-lg text-left" style="font-size: 1.6rem; color: rgb(120,90,60); font-family: 'Noto Sans TC', sans-serif; font-weight: 400; line-height: 1.95; letter-spacing: 0.02em; text-indent: 2em; margin-bottom: 1.5rem;">
+        在過去的數十年間，台灣的街道景觀經歷了劇烈的變化。從日治時期遺留下來的建築脈絡，到戰後快速都市化的衝擊，再到當代對「美」的重新思考——這是一段從批判走向理解，從改造走向共生的過程。讓我們一起探索台灣感性的起源與演變，理解那些被忽視的街角、那些看似混亂卻充滿故事的視覺語言。
+      </p>
+      
+    </div>
+  </section>
+
+  <!-- TIMELINE SECTION: 街景時間軸 -->
+  <section id="timeline-wrapper" class="timeline-section">
+    <div class="timeline-header">
+      <h2>台灣街景時間軸</h2>
+      <p>探索台灣街道景觀的演變歷程</p>
+    </div>
+
+    <div class="timeline-container" id="timeline-section">
+      <!-- 時間段1: 1895–1945 日治時代 -->
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <img src="images/t1_1.jpg" alt="日治時代街景1">
+          <div class="timeline-text">
+            <h3>1895–1945 日治時代</h3>
+            <div class="timeline-year">街景：雙重建築語彙與混雜風格</div>
+            <p>這一時期的街道呈現西式洋樓與台灣傳統市井混合的景觀，如迪化街、六館街尾洋式店屋等。建築風格呈現殖民與本地文化交疊。</p>
+            <div class="source">來源: Wikipedia, Storystudio</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <img src="images/t1_2.jpg" alt="日治時代街景2">
+          <div class="timeline-text">
+            <h3>1895–1945 日治時代</h3>
+            <div class="timeline-year">建築與街道骨架初具現代化</div>
+            <p>畫家陳澄波的《夏日街景》記錄了日治時期街道景象，展現文化混血與多樣性。</p>
+            <div class="source">來源: Wikipedia</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <img src="images/t1_3.jpeg" alt="日治時代街景3">
+          <div class="timeline-text">
+            <h3>1895–1945 日治時代</h3>
+            <div class="timeline-year">城市景觀混合</div>
+            <p>傳統漢式磚瓦房屋與西式建築並存，形成多元文化的街景特徵。</p>
+            <div class="source">來源: BOCH 台北市歷史建築</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 時間段2: 1945–1980s 戰後時期 -->
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <img src="images/t2_1.jpg" alt="戰後街景1">
+          <div class="timeline-text">
+            <h3>1945–1980s 戰後時期</h3>
+            <div class="timeline-year">中華民國美學</div>
+            <p>戰後快速都市化，公寓與集合住宅大量興建，但外觀設計追求效率，招牌與布條混亂，使街景呈現雜亂但便利的特質。</p>
+            <div class="source">來源: The News Lens</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <img src="images/t2_2.jpg" alt="戰後街景2">
+          <div class="timeline-text">
+            <h3>1945–1980s 戰後時期</h3>
+            <div class="timeline-year">功能與秩序優先</div>
+            <p>街道功能性佔優勢，城市快速擴張，但美學與景觀設計多被犧牲，形成混亂街道風貌。</p>
+            <div class="source">來源: The News Lens</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 時間段3: 1990s–2000s 經濟與消費成熟 -->
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <img src="images/t3_1.jpg" alt="1990s街景1">
+          <div class="timeline-text">
+            <h3>1990s–2000s</h3>
+            <div class="timeline-year">街景多樣化與商業招牌文化</div>
+            <p>隨著經濟發展與消費社會成熟，街道上的招牌、小吃店、摩托車停放頻繁，街景豐富多元，也更雜亂。</p>
+            <div class="source">來源: Eliteracy, The News Lens</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <img src="images/t3_2.jpg" alt="1990s街景2">
+          <div class="timeline-text">
+            <h3>1990s–2000s</h3>
+            <div class="timeline-year">生活美學萌芽</div>
+            <p>對老街、傳統市場和巷弄的重新審視，街景的混亂被視為生活氣息，逐漸出現生活美學的討論。</p>
+            <div class="source">來源: The News Lens</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 時間段4: 2017–至今 臺灣感性 -->
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <img src="images/t4_1.jpg" alt="BRUTUS 2017封面">
+          <div class="timeline-text">
+            <h3>2017–至今</h3>
+            <div class="timeline-year">BRUTUS 封面事件 / 臺灣感性</div>
+            <p>2017年，BRUTUS 第 851 期封面以國華街街景，引發廣泛討論。有人認為「醜」，有人認為「真實生活美學」的展現。</p>
+            <div class="source">來源: The News Lens, FTV News</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <img src="images/t4_2.jpg" alt="當代街景2">
+          <div class="timeline-text">
+            <h3>2017–至今</h3>
+            <div class="timeline-year">後殖民景觀 / 異質美學</div>
+            <p>學者以後殖民景觀、異質美學理解台灣街景，不再追求統一美感，而強調生活感、多元與文化記憶。</p>
+            <div class="source">來源: The News Lens</div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="timeline-item">
+        <div class="timeline-card">
+          <img src="images/t4_3.jpg" alt="當代街景3">
+          <div class="timeline-text">
+            <h3>2017–至今</h3>
+            <div class="timeline-year">國際視角 / 文化符號</div>
+            <p>國際媒體與他國觀察者欣賞台灣街景，促使社會重新認識街道美學與文化價值。</p>
+            <div class="source">來源:talkacemedia </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-footer">
+      <p>向右滑動探索更多內容 →</p>
+    </div>
+  </section>
+
+  <!-- 時間軸詳細說明 section -->
+  <section class="text-section">
+    <h2>台灣街景：從實用主義到臺灣感性</h2>
+
+    <p>台灣的街景，是一部城市、社會與文化交錯運轉的流動史。它不只是建築外觀的變遷，也是生活方式、價值觀念、身份認同與美學觀察交織的結果。透過時間軸，我們看到街道從殖民混合、戰後實用、消費文明，到如今被重新認識與再詮釋的過程。</p>
+
+    <h3>日治時期 — 西洋與在地的混血街景（1895–1945）</h3>
+    <p>街道呈現建築與文化的雙重語彙融合。六館街尾洋式店屋是經典例子：洋式店屋立面採巴洛克／文藝復興建築語彙，同時底下承載本地商業與生活功能。這種混雜不是亂，而是歷史與文化交疊的生活語彙，正如陳澄波《夏日街景》捕捉到的日治時期台灣多維城市美。<br>
+    <em>來源: Wikipedia, Storystudio</em></p>
+
+    <h3>戰後至 1980 年代 — 功能優先、實用主義的「中華民國美學」</h3>
+    <p>戰後人口劇增，大量農村人口遷入城市，出現大量集合住宅、公寓，建築以效率與速度為優先，街屋外觀簡陋、陽台外推、鐵皮加蓋。商業活動復甦，招牌、布條、電線、燈箱大量出現，使街景視覺呈現複雜性與雜揉感，形成所謂「中華民國美學」。<br>
+    <em>來源: The News Lens, Taiwan NGO</em></p>
+
+    <h3>1990s–2000s — 消費社會成熟、街道多樣化與「生活美學」萌芽</h3>
+    <p>隨著經濟發展，街道充滿小吃店、商家與服務業，舊市場與老街重新活躍。學者、文化工作者開始以「懷舊」、「在地性」、「庶民文化」視角重新看待過去被貶抑為「亂」、「醜」的街景，生活美學逐漸萌芽，街景成為消費、記憶、認同與文化流動的承載場域。<br>
+    <em>來源: The News Lens, NCCU 論文</em></p>
+
+    <h3>2017 以後 — 外部凝視、文化詮釋與「臺灣感性」</h3>
+    <p>2017 年 BRUTUS 雜誌台灣特輯封面，引發社會對「美醜」與「真實生活感」的討論。街景不再被要求服從歐洲／現代主義設計原則，而成為台灣身份記憶、在地文化、生活節奏與城市故事的可視化書寫。後殖民景觀與異質美學的角度，重新認識台灣街景價值。<br>
+    <em>來源: The News Lens, FTV News</em></p>
+
+    <h3>參考來源</h3>
+    <ul>
+      <li>「Taiwanese Rediscovering their History in the Streets of Taipei」— The News Lens</li>
+      <li>BRUTUS 雜誌台灣特輯封面討論 — The News Lens</li>
+      <li>老街保存與地方記憶研究 — NCCU 論文</li>
+      <li>《夏日街景》（1927）— Wikipedia</li>
+    </ul>
+  </section>
+
+  <!-- 延伸思考 / 互動投票 section -->
+  <section class="reflection-section">
+    <h2>延伸思考 / 開放式問題</h2>
+    <div class="question-container">
+
+      <!-- 問題1 -->
+      <div class="question-card" id="q1">
+        <p class="question-text">
+          1. 台灣街景的「醜」與「美」經常被討論，但究竟什麼構成街景之美？是整齊劃一的視覺秩序，還是生活氣息與文化記憶的真實呈現？
+        </p>
+        <div class="vote-buttons">
+          <button onclick="vote('q1','a')">整齊秩序</button>
+          <button onclick="vote('q1','b')">生活氣息</button>
+          <span class="vote-result" id="q1-result">尚未投票</span>
+        </div>
+      </div>
+
+      <!-- 問題2 -->
+      <div class="question-card" id="q2">
+        <p class="question-text">
+          2. 每一條街道、每一個招牌都承載著歷史與生活記憶。街景是否能成為城市居民認同感、地方文化與歷史連續性的承載者？
+        </p>
+        <div class="vote-buttons">
+          <button onclick="vote('q2','a')">是</button>
+          <button onclick="vote('q2','b')">否</button>
+          <span class="vote-result" id="q2-result">尚未投票</span>
+        </div>
+      </div>
+
+      <!-- 問題3 -->
+      <div class="question-card" id="q3">
+        <p class="question-text">
+          3. 在快速現代化與都市更新的浪潮中，哪些街景值得保存？哪些又可以創造新的生命？
+        </p>
+        <div class="vote-buttons">
+          <button onclick="vote('q3','a')">保存歷史街景</button>
+          <button onclick="vote('q3','b')">創造新生命</button>
+          <span class="vote-result" id="q3-result">尚未投票</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- AWAKENING (no hashtag here per request) -->
+  <section id="awakening" class="chapter-section">
+    <h2>喚起</h2>
+    <p>台灣感性是一種關於氣味、街道、光線、溫度與日常情緒的集合體。它不是被設計出來的美，而是生活累積的溫柔證據。</p>
+    <!-- IG style hashtag area moved to separate page -->
+    <!-- Reels grid below in its own section -->
+  </section>
+
+  <!-- Reels grid (8 placeholder videos) -->
+  <section id="reels-grid">
+    <!-- sample short mp4 source; replace with your own video files/paths -->
+    <div class="reel-item"><video muted loop preload="none" src="https://samplelib.com/lib/preview/mp4/sample-5s.mp4"></video><div class="reel-overlay">▶</div></div>
+    <div class="reel-item"><video muted loop preload="none" src="https://samplelib.com/lib/preview/mp4/sample-5s.mp4"></video><div class="reel-overlay">▶</div></div>
+    <div class="reel-item"><video muted loop preload="none" src="https://samplelib.com/lib/preview/mp4/sample-5s.mp4"></video><div class="reel-overlay">▶</div></div>
+    <div class="reel-item"><video muted loop preload="none" src="https://samplelib.com/lib/preview/mp4/sample-5s.mp4"></video><div class="reel-overlay">▶</div></div>
+    <div class="reel-item"><video muted loop preload="none" src="https://samplelib.com/lib/preview/mp4/sample-5s.mp4"></video><div class="reel-overlay">▶</div></div>
+    <div class="reel-item"><video muted loop preload="none" src="https://samplelib.com/lib/preview/mp4/sample-5s.mp4"></video><div class="reel-overlay">▶</div></div>
+    <div class="reel-item"><video muted loop preload="none" src="https://samplelib.com/lib/preview/mp4/sample-5s.mp4"></video><div class="reel-overlay">▶</div></div>
+    <div class="reel-item"><video muted loop preload="none" src="https://samplelib.com/lib/preview/mp4/sample-5s.mp4"></video><div class="reel-overlay">▶</div></div>
+  </section>
+
+  <!-- HASHTAG PAGE: 独立一頁，有掉落 hashtag 效果 -->
+  <section id="hashtag-page">
+    <h1>#台灣感性</h1>
+    <p>來自他者眼中的台灣感性印象</p>
+    <div id="hashtag-container"></div>
+  </section>
+
+    <!-- 1. 新版序段：Scroll Progress Banner -->
+    <section id="chapter2-diff" class="relative bg-black" style="height: 300vh;">
+        <div id="intro-sticky" style="position: sticky; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center;">
+            
+            <!-- Layer 1: Background Image (The "Before" or Raw state) -->
+            <div class="absolute inset-0 w-full h-full intro-layer-bg">
+                <img src="https://lhy-sara.github.io/as07/image03.png" 
+                     class="w-full h-full object-cover" 
+                     id="intro-base-img"
+                     onerror="this.src='https://placehold.co/1920x1080/1a1a1a/FFF?text=Raw+Background'"
+                     alt="Background Layer">
+            </div>
+
+            <!-- Layer 2: Foreground Image (The "After" or Progress Bar state) -->
+            <!-- width will be controlled by JS -->
+            <div id="intro-progress-img" class="absolute top-0 left-0 h-full w-0 overflow-hidden border-r-4 border-white/80 transition-all duration-75 ease-linear">
+                <!-- Important: Inner image must be w-screen to maintain aspect ratio and not squash -->
+                <div class="w-screen h-screen relative">
+                    <img src="https://lhy-sara.github.io/as07/image05.png" 
+                         class="w-full h-full object-cover filter sepia-[0.2] saturate-150 contrast-110" 
+                         onerror="this.src='https://placehold.co/1920x1080/333/FFF?text=Aesthetic+Background'"
+                         alt="Foreground Layer">
+                </div>
+            </div>
+
+            <!-- Text Layer -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none mix-blend-overlay md:mix-blend-normal">
+                <!-- Typewriter Text -->
+                <div id="intro-typewriter-text" class="text-lg md:text-xl font-bold text-white typewriter-cursor opacity-0 serif mb-4" style="font-size: 3rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap;"></div>
+                
+                <!-- Main Title (Fades in later) -->
+                <div class="opacity-0 transition-opacity duration-1000 serif text-center px-4 flex flex-col items-center" id="intro-main-title" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.4);">
+                    <p class="md:text-base tracking-widest" style="font-size: 2rem; color: white; letter-spacing: 0.15em; margin: 0; line-height: 1;">CHAPTER 2</p>
+                    <h1 class="tracking-widest text-white" style="font-size:3rem; margin: 1rem 0 0 0; line-height: 1.4;">
+                        審美濾鏡：臺灣感性的文化差異
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Scroll Hint -->
+            <div id="intro-scroll-hint" class="absolute bottom-10 w-full text-center text-white/70 animate-bounce transition-opacity duration-500">
+                <p class="text-base tracking-widest mb-2">SCROLL TO EXPLORE</p>
+                <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- 報導引言 with Parallax -->
+    <section class="relative w-full px-6 md:px-12 overflow-hidden py-40" style="background-color: rgb(245,241,235); display: flex; align-items: center; justify-content: center;">
+        <!-- Parallax Background Layer -->
+        <div class="absolute inset-0 w-full h-full" style="background: linear-gradient(135deg, rgba(236,199,109,0.1) 0%, rgba(101,132,101,0.05) 100%); will-change: transform; z-index: -1;" id="parallax-bg"></div>
+        
+        <!-- Decorative Lines -->
+        <div class="absolute top-20 left-0 w-32 h-1" style="background: linear-gradient(90deg, rgb(236,199,109) 0%, rgba(236,199,109,0) 100%);"></div>
+        <div class="absolute bottom-20 right-0 w-32 h-1" style="background: linear-gradient(90deg, rgba(101,132,101,0) 0%, rgb(101,132,101) 100%);"></div>
+        
+        <!-- Content with Parallax Text -->
+        <div class="max-w-3xl" style="will-change: transform; position: relative; z-index: 10;" id="parallax-text">
+            <!-- 章節標記 -->
+            <div class="text-center mb-8">
+                <p class="text-sm md:text-base uppercase tracking-widest" style="color: rgb(101,132,101); font-weight: 600; letter-spacing: 0.2em;">CHAPTER 2</p>
+                <div class="w-16 h-1 mx-auto mt-3" style="background-color: rgb(236,199,109);"></div>
+            </div>
+            
+            <!-- 主文 -->
+            <p class="text-base md:text-lg text-left" style="font-size: 1.6rem; color: rgb(120,90,60); font-family: 'Noto Sans TC', sans-serif; font-weight: 400; line-height: 1.95; letter-spacing: 0.02em; text-indent: 2em;">
+                當我們談論「街景感性」時，文化背景如何塑造了我們對臺灣城市風景的理解？本期報導邀請四位擁有不同文化視角的觀察者，透過他們的眼光，揭示同一條街道如何被賦予不同的意義。從韓國學生的新鮮視角，到在地攝影師的深刻觀察，每一個凝視都是一面審美的濾鏡。
+            </p>
+        </div>
+    </section>
+
+    <script>
+        // Parallax Scrolling Effect for Chapter 1 Introduction
+        const chapter1ParallaxBg = document.getElementById('chapter1-parallax-bg');
+        const chapter1ParallaxText = document.getElementById('chapter1-parallax-text');
+        const chapter1IntroSection = chapter1ParallaxBg?.parentElement;
+        
+        if (chapter1ParallaxBg && chapter1ParallaxText && chapter1IntroSection) {
+            window.addEventListener('scroll', () => {
+                const sectionTop = chapter1IntroSection.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                // Only apply parallax when section is in view
+                if (sectionTop < windowHeight && sectionTop + chapter1IntroSection.offsetHeight > 0) {
+                    const scrolled = window.scrollY;
+                    const sectionScroll = scrolled - (chapter1IntroSection.offsetTop - windowHeight);
+                    
+                    // Background moves slightly slower (subtle effect)
+                    chapter1ParallaxBg.style.transform = `translateY(${sectionScroll * 0.15}px)`;
+                    
+                    // Text doesn't move - stays centered
+                    chapter1ParallaxText.style.transform = `none`;
+                } else {
+                    // Reset when out of view
+                    chapter1ParallaxText.style.transform = `none`;
+                }
+            }, { passive: true });
+        }
+    </script>
+
+    <script>
+        // Parallax Scrolling Effect for Introduction
+        const parallaxBg = document.getElementById('parallax-bg');
+        const parallaxText = document.getElementById('parallax-text');
+        const introSection = parallaxBg?.parentElement;
+        
+        if (parallaxBg && parallaxText && introSection) {
+            window.addEventListener('scroll', () => {
+                const sectionTop = introSection.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                // Only apply parallax when section is in view
+                if (sectionTop < windowHeight && sectionTop + introSection.offsetHeight > 0) {
+                    const scrolled = window.scrollY;
+                    const sectionScroll = scrolled - (introSection.offsetTop - windowHeight);
+                    
+                    // Reduce parallax movement to prevent overlap
+                    // Background moves slightly slower (subtle effect)
+                    parallaxBg.style.transform = `translateY(${sectionScroll * 0.15}px)`;
+                    
+                    // Text doesn't move - stays centered
+                    parallaxText.style.transform = `none`;
+                } else {
+                    // Reset when out of view
+                    parallaxText.style.transform = `none`;
+                }
+            }, { passive: true });
+        }
+
+        // Parallax Scrolling Effect for Conclusion
+        const parallaxBgConclusion = document.getElementById('parallax-bg-conclusion');
+        const parallaxTextConclusion = document.getElementById('parallax-text-conclusion');
+        const conclusionSection = parallaxBgConclusion?.parentElement;
+        
+        if (parallaxBgConclusion && parallaxTextConclusion && conclusionSection) {
+            window.addEventListener('scroll', () => {
+                const sectionTop = conclusionSection.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                // Only apply parallax when section is in view
+                if (sectionTop < windowHeight && sectionTop + conclusionSection.offsetHeight > 0) {
+                    const scrolled = window.scrollY;
+                    const sectionScroll = scrolled - (conclusionSection.offsetTop - windowHeight);
+                    
+                    // Reduce parallax movement to prevent overlap
+                    // Background moves slightly slower (subtle effect)
+                    parallaxBgConclusion.style.transform = `translateY(${sectionScroll * 0.15}px)`;
+                    
+                    // Text doesn't move - stays centered
+                    parallaxTextConclusion.style.transform = `none`;
+                } else {
+                    // Reset when out of view
+                    parallaxTextConclusion.style.transform = `none`;
+                }
+            }, { passive: true });
+        }
+    </script>
+
+    <!-- 2. 段落 1：視角切換的「多重凝視」 (Sticky Shutter) -->
+    <section id="multi-gaze" class="relative h-[400vh]" style="background-color: rgb(233,217,194);">
+        <div class="sticky top-0 h-screen overflow-hidden flex items-center justify-center">
+            <!-- Base Image -->
+            <div class="absolute inset-0">
+                <img src="https://images.unsplash.com/photo-1495567720989-cebdbdd97913?q=80&w=2069&auto=format&fit=crop" 
+                     onerror="this.src='https://placehold.co/1920x1080/e0f4ff/FFF?text=Blurred+Sky'"
+                     class="w-full h-full object-cover opacity-80" alt="Blurred Sky" style="filter: blur(3px) brightness(1.6) contrast(0.75) saturate(0.5);">
+                <div class="absolute inset-0 bg-white/20"></div>
+            </div>
+
+            <!-- Overlays (Shutters) -->
+            <!-- 1. Korean Student -->
+            <div id="shutter-1" class="shutter-panel absolute inset-0 bg-orange-900/20 backdrop-sepia-[.4] translate-x-full flex items-start justify-start pt-20 pl-8">
+                <h2 class=" font-bold text-white drop-shadow-lg serif" style="font-size: 4rem; margin-left: 120px;">韓國外籍生</h2>
+            </div>
+            <!-- 2. Photographer -->
+            <div id="shutter-2" class="shutter-panel absolute inset-0 bg-blue-900/20 backdrop-contrast-125 translate-y-full flex items-end justify-end pb-20 pr-8">
+                <h2 class=" font-bold text-white drop-shadow-lg serif" style="font-size: 4rem; margin-right: 120px;">哈韓台灣人</h2>
+            </div>
+            <!-- 3. Researcher -->
+            <div id="shutter-3" class="shutter-panel absolute inset-0 bg-gray-900/40 backdrop-grayscale translate-x-[-100%] flex items-start justify-end pt-20 pr-8 border-r border-white/20">
+                <h2 class=" font-bold text-white drop-shadow-lg serif" style="font-size: 4rem; margin-right: 120px;">台灣攝影師</h2>
+            </div>
+            <!-- 4. TW Student -->
+            <div id="shutter-4" class="shutter-panel absolute inset-0 bg-pink-900/10 backdrop-saturate-150 translate-y-[-100%] flex items-end justify-start pb-20 pl-8">
+                <h2 class=" font-bold text-white drop-shadow-lg serif" style="font-size: 4rem; margin-left: 120px;">文化研究學者</h2>
+            </div>
+            <!-- 5. Korean Tour Guide -->
+            <div id="shutter-5" class="shutter-panel absolute inset-0 bg-purple-900/20 backdrop-hue-rotate-15 translate-x-full flex items-center justify-center">
+                <h2 class=" font-bold text-white drop-shadow-lg serif" style="font-size: 4rem;">韓國導遊</h2>
+            </div>
+            <!-- 6. Urban Design Scholar -->
+            <div id="shutter-6" class="shutter-panel absolute inset-0 bg-teal-900/20 backdrop-opacity-80 translate-y-full flex items-center justify-center">
+                <h2 class=" font-bold text-white drop-shadow-lg serif" style="font-size: 4rem;">都市設計學者</h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- 段落 2：5個訪談視角 -->
+    <section style="background-color: rgb(233,217,194);">
+        <!-- Interview 1: 韓國外籍生 -->
+        <div class="row flex w-full" style="min-height: 100vh;">
+            <div class="col md:w-1/2 w-full sticky top-0 h-screen flex items-center justify-center overflow-hidden" style="background-color: rgb(101,132,101);">
+                <img src="https://images.unsplash.com/photo-1616050274574-65834b830c8c?q=80&w=1080&auto=format&fit=crop" 
+                     class="w-full h-full object-cover" alt="韓國外籍生">
+            </div>
+            <div class="col md:w-1/2 w-full py-40 px-10 md:px-12 flex flex-col justify-center" style="background-color: rgb(233,217,194);">
+                <div style="margin-bottom: 3rem;">
+                    <p class="text-base md:text-lg tracking-widest uppercase" style="color: rgb(101,132,101); margin-bottom: 0.5rem; letter-spacing: 0.05em;">韓國外籍生</p>
+                    <h3 class="font-bold leading-tight" style="font-size: 3rem; color: rgb(120,90,60); font-family: 'Noto Serif TC', serif;">Minji</h3>
+                </div>
+                <div class="p-6 md:p-8 rounded-lg" style="background-color: rgba(236,199,109, 0.15); backdrop-filter: blur(8px);">
+                    <div class="space-y-5 text-base md:text-lg leading-relaxed" style="color: rgb(120,90,60); font-family: 'Noto Sans TC', sans-serif;">
+                        <p style="text-indent: 2em;">來到台灣已經三年了，每一條街道都有新的發現。起初我被台灣街景的混雜感所困惑—老舊與現代交錯、傳統招牌與便利商店相鄰—但漸漸地，我學會欣賞這種無序中的和諧。</p>
+                        <p style="text-indent: 2em;">在首爾，街道被精心設計，一切都有既定的位置。而台灣則像一幅正在進行中的畫作，每個角落都訴說著不同的故事。我用我的相機記錄這些故事，因為這些尋常的景象，對我來說都閃閃發光。</p>
+                        <p style="text-indent: 2em;">街景不只是背景，它是城市的靈魂。台灣的街景教會我看見美，不是在完美中，而是在生活本身。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interview 2: 哈韓台灣人 -->
+        <div class="row flex w-full" style="min-height: 100vh;">
+            <div class="col md:w-1/2 w-full py-24 px-10 md:px-12 flex flex-col justify-center" style="background-color: rgb(233,217,194);">
+                <div style="margin-bottom: 3rem;">
+                    <p class="text-base md:text-lg tracking-widest uppercase" style="color: rgb(101,132,101); margin-bottom: 0.5rem; letter-spacing: 0.05em;">國立臺灣師範大學國文系學生</p>
+                    <h3 class="font-bold leading-tight" style="font-size: 3rem; color: rgb(120,90,60); font-family: 'Noto Serif TC', serif;">邱苡安</h3>
+                </div>
+                <div class="p-5 md:p-6 rounded-lg" style="background-color: rgba(236,199,109, 0.15); backdrop-filter: blur(8px);">
+                    <div class="space-y-5 text-base md:text-lg leading-relaxed" style="color: rgb(120,90,60); font-family: 'Noto Sans TC', sans-serif;">
+                        <p style="text-indent: 2em;">看韓劇改變了我對美學的理解。首爾的街道乾淨、有序、充滿設計感。相比之下，台北的街景顯得有些混亂，但那不是缺陷。</p>
+                        <p style="text-indent: 2em;">我開始意識到，不同文化的街景反映的是不同的價值觀。韓國強調秩序與效率，台灣則展現活力與包容。兩者都美麗，只是美麗的方式不同。</p>
+                        <p style="text-indent: 2em;">現在我看台灣的街景，不再想著「如果能像首爾就好了」，反而開始欣賞台灣獨有的生活質感。這種視角的轉變，讓我重新愛上了自己的城市。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col md:w-1/2 w-full sticky top-0 h-screen flex items-center justify-center overflow-hidden" style="background-color: rgb(101,132,101);">
+                <img src="https://images.unsplash.com/photo-1534448177492-6d6c60253151?q=80&w=1080&auto=format&fit=crop" 
+                     class="w-full h-full object-cover" alt="哈韓台灣人">
+            </div>
+        </div>
+
+        <!-- Interview 3: 台灣攝影師 -->
+        <div class="row flex w-full" style="min-height: 100vh;">
+            <div class="col md:w-1/2 w-full sticky top-0 h-screen flex items-center justify-center overflow-hidden" style="background-color: rgb(101,132,101);">
+                <img src="https://images.unsplash.com/photo-1571162239033-0143c6d20352?q=80&w=1080&auto=format&fit=crop" 
+                     class="w-full h-full object-cover" alt="台灣攝影師">
+            </div>
+            <div class="col md:w-1/2 w-full py-24 px-10 md:px-12 flex flex-col justify-center" style="background-color: rgb(233,217,194);">
+                <div style="margin-bottom: 3rem;">
+                    <p class="text-base md:text-lg tracking-widest uppercase" style="color: rgb(101,132,101); margin-bottom: 0.5rem; letter-spacing: 0.05em;">臺灣攝影師</p>
+                    <h3 class="font-bold leading-tight" style="font-size: 3rem; color: rgb(120,90,60); font-family: 'Noto Serif TC', serif;">張適</h3>
+                </div>
+                <div class="p-5 md:p-6 rounded-lg" style="background-color: rgba(236,199,109, 0.15); backdrop-filter: blur(8px);">
+                    <div class="space-y-5 text-base md:text-lg leading-relaxed" style="color: rgb(120,90,60); font-family: 'Noto Sans TC', sans-serif;">
+                        <p style="text-indent: 2em;">我的鏡頭捕捉台灣街景已經二十年了。每一次的快門按下，都是我對這塊土地的對話。我喜歡拍攝那些被忽視的角落—斑駁的牆面、昏黃的路燈、行人的背影。</p>
+                        <p style="text-indent: 2em;">這些元素組合在一起，展現出台灣獨特的光影與故事。許多人說台灣街景缺乏美感，但我認為那是因為他們沒有學會用對的眼光去看。</p>
+                        <p style="text-indent: 2em;">攝影教會我，美不是客觀的存在，而是主觀的發現。當我按下快門的那一刻，我就創造了一個視角，一個看待台灣的新方式。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interview 4: 文化研究學者 -->
+        <div class="row flex w-full" style="min-height: 100vh;">
+            <div class="col md:w-1/2 w-full py-24 px-10 md:px-12 flex flex-col justify-center" style="background-color: rgb(233,217,194);">
+                <div style="margin-bottom: 3rem;">
+                    <p class="text-base md:text-lg tracking-widest uppercase" style="color: rgb(101,132,101); margin-bottom: 0.5rem; letter-spacing: 0.05em;">國立臺灣師範大學大傳所教授</p>
+                    <h3 class="font-bold leading-tight" style="font-size: 3rem; color: rgb(120,90,60); font-family: 'Noto Serif TC', serif;">蔡如音</h3>
+                </div>
+                <div class="p-5 md:p-6 rounded-lg" style="background-color: rgba(236,199,109, 0.15); backdrop-filter: blur(8px);">
+                    <div class="space-y-5 text-base md:text-lg leading-relaxed" style="color: rgb(120,90,60); font-family: 'Noto Sans TC', sans-serif;">
+                        <p style="text-indent: 2em;">街景是城市文化的視覺表現。台灣的街景反映了其複雜的歷史—日本殖民、國民政府遷台、全球化浪潮—這些影響層疊在物理空間上。</p>
+                        <p style="text-indent: 2em;">相比之下，韓國在戰後進行了大規模的都市規劃，創造了更統一的視覺文化。台灣則保留了更多的歷史痕跡，這使得街景更加多元，但也更難被理解為「美」。</p>
+                        <p style="text-indent: 2em;">我的研究表明，對街景的審美判斷，往往受到文化背景與權力關係的影響。我們需要批判性地思考，為什麼某些街景被認為是美的，而其他的則被忽視。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col md:w-1/2 w-full sticky top-0 h-screen flex items-center justify-center overflow-hidden" style="background-color: rgb(101,132,101);">
+                <img src="https://images.unsplash.com/photo-1605218427368-3631385794d0?q=80&w=1080&auto=format&fit=crop" 
+                     class="w-full h-full object-cover" alt="文化研究學者">
+            </div>
+        </div>
+
+        <!-- Interview 5: 韓國導遊 -->
+        <div class="row flex w-full" style="min-height: 100vh;">
+            <div class="col md:w-1/2 w-full sticky top-0 h-screen flex items-center justify-center overflow-hidden" style="background-color: rgb(101,132,101);">
+                <img src="https://images.unsplash.com/photo-1614090878626-1651528c252d?q=80&w=1080&auto=format&fit=crop" 
+                     class="w-full h-full object-cover" alt="韓國導遊">
+            </div>
+            <div class="col md:w-1/2 w-full py-24 px-10 md:px-12 flex flex-col justify-center" style="background-color: rgb(233,217,194);">
+                <div style="margin-bottom: 3rem;">
+                    <p class="text-base md:text-lg tracking-widest uppercase" style="color: rgb(101,132,101); margin-bottom: 0.5rem; letter-spacing: 0.05em;">韓國導遊</p>
+                    <h3 class="font-bold leading-tight" style="font-size: 3rem; color: rgb(120,90,60); font-family: 'Noto Serif TC', serif;">尹智沿</h3>
+                </div>
+                <div class="p-5 md:p-6 rounded-lg" style="background-color: rgba(236,199,109, 0.15); backdrop-filter: blur(8px);">
+                    <div class="space-y-5 text-base md:text-lg leading-relaxed" style="color: rgb(120,90,60); font-family: 'Noto Sans TC', sans-serif;">
+                        <p style="text-indent: 2em;">我帶領過上千名遊客遊覽台灣，每一次的導覽都是文化交流的機會。韓國遊客常常對台灣街景感到驚訝—有人認為混亂，有人認為有趣。</p>
+                        <p style="text-indent: 2em;">我會告訴他們，台灣街景的「混亂」其實是「自由」。沒有過度的規劃與控制，台灣允許多元的商業活動與文化表達在街道上共存。這種自由，在首爾是罕見的。</p>
+                        <p style="text-indent: 2em;">導遊的職責不只是指出景點，而是幫助遊客調整他們的視角，讓他們用當地人的眼光去欣賞街景。當他們開始看見台灣街景的獨特美麗時，我的工作就完成了。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interview 6: 都市設計學者 -->
+        <div class="row flex w-full" style="min-height: 100vh;">
+            <div class="col md:w-1/2 w-full py-24 px-10 md:px-12 flex flex-col justify-center" style="background-color: rgb(233,217,194);">
+                <div style="margin-bottom: 3rem;">
+                    <p class="text-base md:text-lg tracking-widest uppercase" style="color: rgb(101,132,101); margin-bottom: 0.5rem; letter-spacing: 0.05em;">都市規劃學者</p>
+                    <h3 class="font-bold leading-tight" style="font-size: 3rem; color: rgb(120,90,60); font-family: 'Noto Serif TC', serif;">姓名</h3>
+                </div>
+                <div class="p-5 md:p-6 rounded-lg" style="background-color: rgba(236,199,109, 0.15); backdrop-filter: blur(8px);">
+                    <div class="space-y-5 text-base md:text-lg leading-relaxed" style="color: rgb(120,90,60); font-family: 'Noto Sans TC', sans-serif;">
+                        <p style="text-indent: 2em;">都市設計不僅是建築與空間的問題，更深層地反映了城市規劃的哲學與權力。台灣街景的「混雜」源於其獨特的發展歷程—高密度、多元地權、文化疊層。</p>
+                        <p style="text-indent: 2em;">相比韓國的「集中式規劃」，台灣採取了更分散、更有機的成長模式。這導致了視覺上的複雜性，但也保留了在地特色與人文溫度。我們不應該用歐洲或東亞先進城市的標準來批評台灣街景。</p>
+                        <p style="text-indent: 2em;">我的研究主張重新定義「美麗街景」。美不是均質與秩序，也可以是多元與活力。台灣的街景教我們，包容性的都市設計，往往比完美的視覺效果更有價值。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col md:w-1/2 w-full sticky top-0 h-screen flex items-center justify-center overflow-hidden" style="background-color: rgb(101,132,101);">
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1080&auto=format&fit=crop" 
+                     class="w-full h-full object-cover" alt="都市設計學者">
+            </div>
+        </div>
+    </section>
+
+    <!-- 段落 5：編者反思 -->
+    <section class="relative w-full px-6 md:px-12 overflow-hidden py-40" style="background-color: rgb(245,241,235); display: flex; align-items: center; justify-content: center;">
+        <!-- Parallax Background Layer -->
+        <div class="absolute inset-0 w-full h-full" style="background: linear-gradient(135deg, rgba(101,132,101,0.1) 0%, rgba(236,199,109,0.05) 100%); will-change: transform; z-index: -1;" id="parallax-bg-conclusion"></div>
+        
+        <!-- Decorative Lines -->
+        <div class="absolute top-20 left-0 w-32 h-1" style="background: linear-gradient(90deg, rgb(101,132,101) 0%, rgba(101,132,101,0) 100%);"></div>
+        <div class="absolute bottom-20 right-0 w-32 h-1" style="background: linear-gradient(90deg, rgba(236,199,109,0) 0%, rgb(236,199,109) 100%);"></div>
+        
+        <!-- Content with Parallax Text -->
+        <div class="max-w-3xl" style="will-change: transform; position: relative; z-index: 10;" id="parallax-text-conclusion">
+            <!-- 章節標記 -->
+            <div class="text-center mb-8">
+                <p class="text-sm md:text-base uppercase tracking-widest" style="color: rgb(101,132,101); font-weight: 600; letter-spacing: 0.2em;">CONCLUSION</p>
+                <div class="w-16 h-1 mx-auto mt-3" style="background-color: rgb(101,132,101);"></div>
+            </div>
+            
+            <!-- 主文 -->
+            <h2 class="text-base md:text-lg text-center" style="font-size: 1.8rem; color: rgb(120,90,60); font-family: 'Noto Serif TC', serif; font-weight: 900; line-height: 1.95; letter-spacing: 0.05em;">小結</h2>
+        </div>
+    </section>
+
+    <!-- 段落 5 補充：濾鏡比較互動區 -->
+    <section class="min-h-screen flex flex-col items-center justify-center py-20 px-4" style="background-color: rgb(245,241,235);">
+        <div class="max-w-5xl w-full">
+            <!-- 標題 -->
+            <div class="text-center mb-16">
+                <p class="text-sm md:text-base uppercase tracking-widest mb-4" style="color: rgb(101,132,101); font-weight: 600; letter-spacing: 0.2em;">FILTER PERSPECTIVES</p>
+                <h2 class="font-bold text-center serif" style="font-size: 2.8rem; color: rgb(101,132,101); font-family: 'Noto Serif TC', serif; line-height: 1.6; margin-bottom: 3rem;">同一條街，不同的眼光</h2>
+            </div>
+
+            <!-- 濾鏡比較展示 -->
+            <div class="w-full mb-12 rounded-lg overflow-hidden" style="background-color: rgb(233,217,194); box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+                <!-- 圖片展示 -->
+                <div class="relative w-full aspect-video overflow-hidden" style="height: 500px;">
+                    <img id="comparison-image" 
+                         src="https://images.unsplash.com/photo-1495567720989-cebdbdd97913?q=80&w=2069&auto=format&fit=crop" 
+                         onerror="this.src='https://placehold.co/1920x1080/e0f4ff/FFF?text=Street+Scene'"
+                         class="w-full h-full object-cover transition-all duration-700 ease-in-out" alt="Street Comparison">
+                </div>
+
+                <!-- 濾鏡名稱與描述 -->
+                <div class="p-8 md:p-12 text-center" style="background-color: rgba(255,255,255,0.6);">
+                    <h3 id="filter-name" class="font-bold mb-3 transition-opacity duration-500" style="font-size: 2rem; color: rgb(120,90,60); font-family: 'Noto Serif TC', serif; opacity: 1;">原始街景</h3>
+                    <p id="filter-desc" class="text-lg transition-opacity duration-500" style="color: rgb(120,90,60); font-family: 'Noto Sans TC', sans-serif; opacity: 1;">無特殊濾鏡介入的客觀紀錄。</p>
+                </div>
+            </div>
+
+            <!-- 濾鏡按鈕群 -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
+                <button onclick="applyFilter('none')" class="w-full py-4 px-4 rounded-lg font-bold transition-all duration-300 hover:shadow-lg serif" 
+                        style="background-color: rgba(120,90,60,0.1); color: rgb(120,90,60); border: 2px solid rgb(120,90,60);">
+                    原始<br>街景
+                </button>
+                <button onclick="applyFilter('korea')" class="w-full py-4 px-4 rounded-lg font-bold transition-all duration-300 hover:shadow-lg serif" 
+                        style="background-color: rgba(255,165,0,0.1); color: rgb(120,90,60); border: 2px solid rgb(255,165,0);">
+                    韓式<br>懷舊
+                </button>
+                <button onclick="applyFilter('photo')" class="w-full py-4 px-4 rounded-lg font-bold transition-all duration-300 hover:shadow-lg serif" 
+                        style="background-color: rgba(50,130,200,0.1); color: rgb(120,90,60); border: 2px solid rgb(50,130,200);">
+                    攝影<br>構圖
+                </button>
+                <button onclick="applyFilter('research')" class="w-full py-4 px-4 rounded-lg font-bold transition-all duration-300 hover:shadow-lg serif" 
+                        style="background-color: rgba(100,100,100,0.1); color: rgb(120,90,60); border: 2px solid rgb(100,100,100);">
+                    學者<br>結構
+                </button>
+                <button onclick="applyFilter('pop')" class="w-full py-4 px-4 rounded-lg font-bold transition-all duration-300 hover:shadow-lg serif" 
+                        style="background-color: rgba(230,100,150,0.1); color: rgb(120,90,60); border: 2px solid rgb(230,100,150);">
+                    流行<br>折返
+                </button>
+            </div>
+
+            <!-- 說明文字 -->
+            <div class="text-center" style="color: rgb(120,90,60); font-family: 'Noto Sans TC', sans-serif;">
+                <p class="text-lg leading-relaxed">
+                    点击上面的按鈕，观察同一條街景在不同审美视角下的样貌。<br>
+                    每个视角都代表了一种文化背景与个人偏好对「美」的诠释。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 結尾：互動凝視反問 -->
+    <section class="min-h-screen flex flex-col items-center justify-center py-12 px-4" style="background-color: #d4ccc0;">
+        <h2 class="font-bold text-center mb-12 serif" style="font-size: 2.8rem; color: rgb(101,132,101); font-family: 'Noto Serif TC', serif; line-height: 1.6;">你看見的臺灣感性是什麼模樣？</h2>
+        
+        <div class="w-full max-w-6xl p-6 rounded-xl shadow-2xl mx-auto flex flex-col items-center" style="background-color: rgba(255,255,255, 0.8); border: 1px solid rgba(120,90,60, 0.3);">
+            <!-- Canvas for Filter Manipulation -->
+            <div class="relative aspect-video overflow-hidden mb-6 rounded w-full" style="background-color: #d4ccc0; max-height: 450px;">
+                <img id="user-edit-image" src="https://images.unsplash.com/photo-1544198365-f5d60b6d8190?q=80&w=2070&auto=format&fit=crop" 
+                     onerror="this.src='https://placehold.co/1000x600/333/FFF?text=Raw+Street'"
+                     class="w-full h-full object-cover" alt="Raw Street for Editing">
+                
+                <!-- Image Navigation -->
+                <div class="absolute bottom-4 right-4 flex gap-2">
+                    <button id="prev-image-btn" class="px-2 py-1 text-lg font-bold transition-all hover:opacity-100" 
+                            style="color: rgb(101,132,101); opacity: 0.6; background-color: transparent;">
+                        &lt;
+                    </button>
+                    <button id="next-image-btn" class="px-2 py-1 text-lg font-bold transition-all hover:opacity-100" 
+                            style="color: rgb(101,132,101); opacity: 0.6; background-color: transparent;">
+                        &gt;
+                    </button>
+                </div>
+                
+            </div>
+
+            <!-- Controls -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 p-6 rounded-lg w-full" style="background-color: rgba(120,90,60, 0.1);">
+                <div class="space-y-3">
+                    <label class="text-base uppercase tracking-wider" style="color: rgb(120,90,60);">色溫 (Temperature)</label>
+                    <input type="range" id="range-sepia" min="-100" max="100" value="0" class="w-full h-2 rounded-lg appearance-none cursor-pointer" style="background-color: rgba(120,90,60, 0.3); accent-color: rgb(120,90,60);">
+                </div>
+                <div class="space-y-3">
+                    <label class="text-base uppercase tracking-wider" style="color: rgb(120,90,60);">對比度 (Contrast)</label>
+                    <input type="range" id="range-contrast" min="50" max="200" value="125" class="w-full h-2 rounded-lg appearance-none cursor-pointer" style="background-color: rgba(120,90,60, 0.3); accent-color: rgb(120,90,60);">
+                </div>
+                <div class="space-y-3">
+                    <label class="text-base uppercase tracking-wider" style="color: rgb(120,90,60);">飽和度 (Saturation)</label>
+                    <input type="range" id="range-saturate" min="0" max="200" value="100" class="w-full h-2 rounded-lg appearance-none cursor-pointer" style="background-color: rgba(120,90,60, 0.3); accent-color: rgb(120,90,60);">
+                </div>
+            </div>
+            <div class="mt-4 text-center w-full">
+                <p id="filter-result-text" class="text-base" style="color: rgb(120,90,60);">調整滑桿，定義屬於你的街景感性</p>
+            </div>
+        </div>
+        
+    </section>
+
+    <script>
+        // --- Logic for the New Intro Banner ---
+        // Handles: Width expansion, Typewriter, Title Fade
+        document.addEventListener('scroll', () => {
+            const introTrack = document.getElementById('chapter2-diff');
+            const stickyView = document.getElementById('intro-sticky');
+            const progressImg = document.getElementById('intro-progress-img');
+            const typewriterTextEl = document.getElementById('intro-typewriter-text');
+            const mainTitle = document.getElementById('intro-main-title');
+            const scrollHint = document.getElementById('intro-scroll-hint');
+
+            if (!introTrack) return;
+
+            const rect = introTrack.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            // rect.top starts at 0 and goes negative as we scroll down.
+            // The total scrollable distance in this section is roughly rect.height - windowHeight
+            
+            // 1. Calculate Progress (0 to 1) relative to the track
+            // We want the animation to complete before the user scrolls past the section.
+            // Let's say the first 50% of the scroll controls width, the next 30% controls text.
+            
+            const scrollDistance = -rect.top;
+            const totalTrackHeight = rect.height - windowHeight;
+            
+            let globalProgress = scrollDistance / totalTrackHeight;
+            globalProgress = Math.max(0, Math.min(1, globalProgress));
+
+            // Phase 1: Expand Image Width (0% - 40% of scroll)
+            let widthProgress = globalProgress / 0.4;
+            widthProgress = Math.max(0, Math.min(1, widthProgress));
+            progressImg.style.width = `${widthProgress * 100}%`;
+
+            // Hide scroll hint once we start scrolling
+            if (globalProgress > 0.05) {
+                scrollHint.style.opacity = 0;
+            } else {
+                scrollHint.style.opacity = 1;
+            }
+
+            // Phase 2: Typewriter Effect (Triggers around 40% - 60%)
+            // We use a flag to ensure it runs once
+            if (globalProgress > 0.4 && !typewriterTextEl.dataset.typed) {
+                typewriterTextEl.dataset.typed = "true";
+                typewriterTextEl.style.opacity = 1;
+                typeWriter("你眼中的台灣街景是什麼模樣？", typewriterTextEl);
+            } else if (globalProgress < 0.3) {
+                // Reset if scrolled back up significantly
+                typewriterTextEl.innerText = "";
+                typewriterTextEl.dataset.typed = "";
+                typewriterTextEl.style.opacity = 0;
+            }
+
+            // Progressive Blur Effect: Starts at 40%, peaks around 70%
+            // Blur ranges from 0px to ~8px smoothly
+            if (globalProgress >= 0.4 && globalProgress <= 0.7) {
+                // Linear progression: 40% -> 0px blur, 70% -> 8px blur
+                const blurProgress = (globalProgress - 0.4) / (0.7 - 0.4); // 0 to 1
+                const blurAmount = blurProgress * 8; // 0px to 8px
+                const baseImg = document.getElementById('intro-base-img');
+                if (baseImg) {
+                    baseImg.style.filter = `blur(${blurAmount.toFixed(2)}px)`;
+                }
+            } else if (globalProgress < 0.4) {
+                // No blur below 40%
+                const baseImg = document.getElementById('intro-base-img');
+                if (baseImg) {
+                    baseImg.style.filter = "blur(0px)";
+                }
+            } else if (globalProgress > 0.7) {
+                // Keep blur at max after 70%
+                const baseImg = document.getElementById('intro-base-img');
+                if (baseImg) {
+                    baseImg.style.filter = "blur(8px)";
+                }
+            }
+
+            // Phase 3: Show Main Title (Triggers around 70%)
+            if (globalProgress > 0.7) {
+                mainTitle.style.opacity = 1;
+                // Fade out the typewriter text to make room
+                typewriterTextEl.style.opacity = 0; 
+            } else {
+                mainTitle.style.opacity = 0;
+            }
+        });
+
+        function typeWriter(text, element, index = 0) {
+            if (index < text.length) {
+                element.textContent += text.charAt(index);
+                setTimeout(() => typeWriter(text, element, index + 1), 100);
+            } else {
+                // Remove cursor effect after done
+                setTimeout(() => element.classList.remove('typewriter-cursor'), 1000);
+            }
+        }
+
+
+        // --- Original Scroll Trigger Logic (Intersection Observer) ---
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: "0px"
+        };
+
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Trigger highlight text if present
+                    const highlights = entry.target.querySelectorAll('.highlight-text');
+                    highlights.forEach(h => setTimeout(() => h.classList.add('active'), 500));
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            fadeObserver.observe(el);
+        });
+
+        // --- Sticky Shutter Logic (Section 2) ---
+        // 六面舞台幕布動畫
+        const sectionMultiGaze = document.getElementById('multi-gaze');
+        const shutters = [
+            document.getElementById('shutter-1'),
+            document.getElementById('shutter-2'),
+            document.getElementById('shutter-3'),
+            document.getElementById('shutter-4'),
+            document.getElementById('shutter-5'),
+            document.getElementById('shutter-6')
+        ];
+
+        window.addEventListener('scroll', () => {
+            if (!sectionMultiGaze) return;
+            const rect = sectionMultiGaze.getBoundingClientRect();
+            const scrollProgress = -rect.top / (rect.height - window.innerHeight);
+            
+            // Phase 1 (0.05 - 0.25): Shutter 1 enters from left
+            const phase1Progress = Math.max(0, Math.min(1, (scrollProgress - 0.05) / 0.2));
+            shutters[0].style.transform = `translateX(${(1 - phase1Progress) * 100}%)`;
+            
+            // Phase 2 (0.25 - 0.45): Shutter 2 enters from bottom
+            const phase2Progress = Math.max(0, Math.min(1, (scrollProgress - 0.25) / 0.2));
+            shutters[1].style.transform = `translateY(${(1 - phase2Progress) * 100}%)`;
+
+            // Phase 3 (0.45 - 0.65): Shutter 3 enters from right
+            const phase3Progress = Math.max(0, Math.min(1, (scrollProgress - 0.45) / 0.2));
+            shutters[2].style.transform = `translateX(${-(1 - phase3Progress) * 100}%)`;
+
+            // Phase 4 (0.65 - 0.85): Shutter 4 enters from top
+            const phase4Progress = Math.max(0, Math.min(1, (scrollProgress - 0.65) / 0.2));
+            shutters[3].style.transform = `translateY(${-(1 - phase4Progress) * 100}%)`;
+
+            // Phase 5 (0.85 - 1.0): Shutter 5 enters from right
+            const phase5Progress = Math.max(0, Math.min(1, (scrollProgress - 0.85) / 0.15));
+            shutters[4].style.transform = `translateX(${(1 - phase5Progress) * 100}%)`;
+
+            // Phase 6 (1.0 - 1.2): Shutter 6 enters from bottom
+            const phase6Progress = Math.max(0, Math.min(1, (scrollProgress - 1.0) / 0.2));
+            shutters[5].style.transform = `translateY(${(1 - phase6Progress) * 100}%)`;
+        });
+
+        // --- Interactive Comparison Logic ---
+        const compImg = document.getElementById('comparison-image');
+        const filterName = document.getElementById('filter-name');
+        const filterDesc = document.getElementById('filter-desc');
+
+        const filterData = {
+            'none': { class: '', name: '原始街景', desc: '無特殊濾鏡介入的客觀紀錄。' },
+            'korea': { class: 'filter-korea', name: '韓式懷舊', desc: '暖色調、低對比，彷彿泛黃的記憶。' },
+            'photo': { class: 'filter-photo', name: '攝影構圖', desc: '高對比、冷色調，強調光影與結構。' },
+            'research': { class: 'filter-research', name: '學者結構', desc: '去色、強調線條，專注於建築密度與形式。' },
+            'pop': { class: 'filter-pop', name: '流行折返', desc: '高飽和、夢幻感，MV式的視覺體驗。' }
+        };
+
+        function applyFilter(type) {
+            compImg.className = "w-full h-full object-cover transition-all duration-700 ease-in-out";
+            
+            const data = filterData[type];
+            if (data.class) compImg.classList.add(data.class);
+            
+            filterName.style.opacity = 0;
+            filterDesc.style.opacity = 0;
+            setTimeout(() => {
+                filterName.textContent = data.name;
+                filterDesc.textContent = data.desc;
+                filterName.style.opacity = 1;
+                filterDesc.style.opacity = 1;
+            }, 300);
+        }
+
+        // --- User Edit Logic ---
+        const userImg = document.getElementById('user-edit-image');
+        const rSepia = document.getElementById('range-sepia');
+        const rContrast = document.getElementById('range-contrast');
+        const rSaturate = document.getElementById('range-saturate');
+        const resultText = document.getElementById('filter-result-text');
+
+        function updateUserFilter() {
+            // 色溫：-100 到 100
+            // 冷色調（負值）：色調 -30度 + 降飽和 + 增亮度
+            // 暖色調（正值）：sepia + 色調旋轉 + 增加對比
+            const tempValue = parseInt(rSepia.value);
+            let filterString = '';
+            
+            if (tempValue < 0) {
+                // 冷色調：藍色系
+                const coldIntensity = Math.abs(tempValue); // 0-100
+                const hueRotate = -30 - (coldIntensity * 0.3); // -30 到 -60 度
+                const brightnessBoost = 100 + (coldIntensity * 0.4); // 100% 到 140%
+                filterString = `hue-rotate(${hueRotate}deg) brightness(${brightnessBoost}%) saturate(80%)`;
+            } else if (tempValue > 0) {
+                // 暖色調：黃橙紅系
+                const warmIntensity = tempValue; // 0-100
+                const hueRotate = 15 + (warmIntensity * 0.2); // 15 到 35 度
+                const sepia = Math.min(warmIntensity * 1.2, 100); // 加強 sepia 效果
+                filterString = `sepia(${sepia}%) hue-rotate(${hueRotate}deg) saturate(110%) brightness(95%)`;
+            } else {
+                // 中性色溫
+                filterString = 'brightness(100%) saturate(100%)';
+            }
+            
+            // 對比度：50 到 200，直接使用
+            const contrastValue = rContrast.value;
+            
+            // 飽和度：0 到 200，直接使用
+            const saturateValue = rSaturate.value;
+            
+            // 組合所有濾鏡
+            userImg.style.filter = `${filterString} contrast(${contrastValue}%) saturate(${saturateValue}%)`;
+
+            // 判斷風格
+            if (Math.abs(tempValue) > 60 && contrastValue < 110) {
+                resultText.textContent = "當前風格：韓式復古感";
+            } else if (contrastValue > 150 && saturateValue < 100) {
+                resultText.textContent = "當前風格：街頭攝影感";
+            } else if (saturateValue > 150) {
+                resultText.textContent = "當前風格：強烈流行文化感";
+            } else {
+                resultText.textContent = "調整滑桿，定義屬於你的街景感性。";
+            }
+        }
+
+        [rSepia, rContrast, rSaturate].forEach(input => {
+            input.addEventListener('input', updateUserFilter);
+        });
+        
+        // 初始化一次，確保起始狀態正確
+        updateUserFilter();
+
+        // --- Image Gallery Logic ---
+        // 圖片陣列 - 用戶可以後續新增連結
+        const imageGallery = [
+            'https://images.unsplash.com/photo-1544198365-f5d60b6d8190?q=80&w=2070&auto=format&fit=crop',
+            // 在下方新增更多圖片連結
+        ];
+
+        let currentImageIndex = 0;
+
+        function updateImageDisplay() {
+            userImg.src = imageGallery[currentImageIndex];
+            document.getElementById('image-counter').textContent = currentImageIndex + 1;
+            document.getElementById('image-total').textContent = imageGallery.length;
+            
+            // 重新應用濾鏡效果
+            updateUserFilter();
+        }
+
+        function goToPrevImage() {
+            currentImageIndex = (currentImageIndex - 1 + imageGallery.length) % imageGallery.length;
+            updateImageDisplay();
+        }
+
+        function goToNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % imageGallery.length;
+            updateImageDisplay();
+        }
+
+        // 綁定按鈕事件
+        document.getElementById('prev-image-btn').addEventListener('click', goToPrevImage);
+        document.getElementById('next-image-btn').addEventListener('click', goToNextImage);
+
+        // 初始化圖片計數器
+        document.getElementById('image-total').textContent = imageGallery.length;
+
+    </script>
+</head>
+<body>
+
+  <!-- ... (body content) ... -->
+
+</body>
+
+  <!-- CHAPTER 3: Full-screen image with title -->
+  <section id="chapter3" class="chapter-cover">
+    <div class="chapter-cover-overlay"></div>
+    <div class="chapter-cover-content">
+      <h1>Chapter 3</h1>
+      <p>後設反思：臺灣感性的自我審視</p>
+    </div>
+  </section>
+
+  <section id="epilogue" class="chapter-section" style="background:#2d3319;color:#f5f0e8">
+    <h2>結語</h2>
+    <p>（結語：台灣感性如何繼續被理解與傳承）</p>
+  </section>
+
+<script type="text/javascript">
+  // Ensure Chapter1 background image is loaded
+  const chapter1 = document.getElementById('chapter1');
+  if (chapter1) {
+    const img = new Image();
+    img.onload = function() {
+      chapter1.style.backgroundImage = "url('./images/c1.jpg')";
+    };
+    img.onerror = function() {
+      console.warn('Failed to load chapter1 background image');
+      chapter1.style.backgroundColor = '#f5f0e8';
+    };
+    img.src = './images/c1.jpg';
+  }
+
+  /* -------------------------
+     Intro flip animation (6x4 grid - 24 tiles)
+     - flips 24 tiles one by one, slowly
+     - sequential from left to right, top to bottom
+     - then shows semi-transparent overlay
+     - then hides intro container
+  ------------------------- */
+  gsap.registerPlugin(ScrollTrigger);
+
+  const slices = document.querySelectorAll('#intro-container .intro-slice');
+  const overlay = document.getElementById('intro-bg-overlay');
+  const titleEl = document.getElementById('intro-title');
+
+  const introTL = gsap.timeline({
+    delay: 0.8,
+    defaults: { ease: "power2.inOut" }
+  });
+
+  // 24 tiles flip one by one, sequentially (left to right, top to bottom)
+  slices.forEach((slice, idx) => {
+    // Each tile flips individually with 0.15s gap between them
+    const staggerDelay = idx * 0.15;
+    introTL.to(slice, { duration: 1.2, rotateY: 180 }, staggerDelay);
+  });
+
+  // After all tiles flip, show the background image
+  introTL.to(overlay, { duration: 0.8, opacity: 1 }, "+=0.3");
+
+  // keep background visible for 2 seconds
+  introTL.to(overlay, { duration: 0.8, opacity: 1 }, "+=2");
+
+  // fade out background and hide intro container
+  introTL.to(overlay, { duration: 1, opacity: 0 }, "+=0");
+  introTL.set('#intro-container', { display: 'none' }, "<");
+
+  /* -------------------------
+     Header scroll behaviour
+  ------------------------- */
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  });
+
+  /* -------------------------
+     MAPBOX setup (kept from your original)
+     - Replace token if you have your own
+  ------------------------- */
+  mapboxgl.accessToken = 'pk.eyJ1IjoicjEyMjI3MTA2IiwiYSI6ImNtaHJneXdqbDBxbjkyaXM3bnJiOTFraHcifQ.BZIX8VBFwjl65YN9CiM6Hw';
+
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/light-v11',
+    center: [120.9, 23.8],
+    zoom: 7,
+    pitch: 0,
+    bearing: 0
+  });
+
+  // disable map interactions for landing scroll-controlled experience
+  map.scrollZoom.disable();
+  map.dragPan.disable();
+  map.dragRotate.disable();
+  map.keyboard.disable();
+  map.doubleClickZoom.disable();
+  map.touchZoomRotate.disable();
+
+  const locations = [
+    { name: '全台', coords: [120.9, 23.8], zoom: 7, photo: null },
+    { name: '台北', coords: [121.5654, 25.0330], zoom: 11, photo: 'photo-taipei' },
+    { name: '台中', coords: [120.6736, 24.1477], zoom: 11, photo: 'photo-taichung' },
+    { name: '台南', coords: [120.2513, 22.9908], zoom: 11, photo: 'photo-tainan' },
+    { name: '花蓮', coords: [121.6015, 23.9937], zoom: 10.5, photo: 'photo-hualien' }
+  ];
+
+  const photos = {};
+  locations.forEach(loc => {
+    if (loc.photo) photos[loc.photo] = document.getElementById(loc.photo);
+  });
+
+  let currentIndex = -1;
+  let mapScrollInitialized = false;
+  
+  // Function to initialize map scroll trigger
+  function initMapScroll() {
+    if (mapScrollInitialized) return;
+    mapScrollInitialized = true;
+    
+    ScrollTrigger.create({
+      trigger: '#map-section',
+      start: 'top top',
+      end: '+=700%',
+      scrub: 2,
+      pin: true,
+      onUpdate: self => {
+        if (!map.isSourceLoaded('composite')) return;
+        const progress = self.progress;
+        const total = locations.length;
+        locations.forEach((loc, index) => {
+          // For each location, spread them across the scroll progress
+          // Each location gets ~20% of the total scroll range
+          const start = (index / total) - 0.05;
+          const end = ((index + 1) / total) + 0.05;
+          const t = Math.max(0, Math.min(1, (progress - start) / (end - start)));
+          
+          if (t > 0.1 && t < 0.9) {
+            if (currentIndex !== index) {
+              currentIndex = index;
+              console.log(`Showing location ${index}: ${loc.name}`);
+              try {
+                map.flyTo({ center: loc.coords, zoom: loc.zoom, duration: 1200, essential: true });
+              } catch(e) {
+                console.error('Map flyTo error:', e);
+              }
+              Object.values(photos).forEach(p => { if (p) p.classList.remove('show'); });
+              if (loc.photo && photos[loc.photo]) {
+                setTimeout(()=> {
+                  photos[loc.photo].classList.add('show');
+                  const overlay = document.getElementById('map-overlay');
+                  if (overlay) overlay.classList.add('show');
+                }, 500);
+              } else {
+                const overlay = document.getElementById('map-overlay');
+                if (overlay) overlay.classList.remove('show');
+              }
+            }
+          }
+        });
+      }
+    });
+  }
+  
+  // Initialize on map load, or fallback after delay
+  map.on('load', initMapScroll);
+  setTimeout(initMapScroll, 3000); // fallback if load event doesn't fire
+
+  /* -------------------------
+     TIMELINE horizontal GSAP scroll (optional - native scroll also works)
+  ------------------------- */
+  const timelineWrapper = document.getElementById('timeline-wrapper');
+  const timelineSection = document.getElementById('timeline-section');
+  
+  // Remove old GSAP timeline scroll if not needed, keep native scroll instead
+  // If you want GSAP scroll trigger, uncomment below:
+  /*
+  function setupTimelineScroll(){
+    const items = document.querySelectorAll('.timeline-item');
+    if (items.length === 0) return;
+    
+    const containerWidth = timelineSection.offsetWidth;
+    const scrollWidth = timelineSection.scrollWidth;
+    
+    gsap.to(timelineSection, {
+      x: () => -(scrollWidth - containerWidth),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#timeline-wrapper',
+        start: 'top top',
+        end: () => `+=${scrollWidth}`,
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true
+      }
+    });
+  }
+  window.addEventListener('load', setupTimelineScroll);
+  window.addEventListener('resize', () => { ScrollTrigger.refresh(); });
+  */
+
+  /* -------------------------
+     REELS hover play
+  ------------------------- */
+  document.querySelectorAll('.reel-item').forEach(item => {
+    const v = item.querySelector('video');
+    item.addEventListener('mouseenter', () => { v.play().catch(()=>{}); });
+    item.addEventListener('mouseleave', () => { v.pause(); });
+    // click to toggle mute / unmute or open lightbox (simple toggle here)
+    item.addEventListener('click', () => {
+      if (v.paused) v.play(); else v.pause();
+    });
+  });
+
+  /* -------------------------
+     Hashtag page: falling tags (only on hashtag-page view)
+  ------------------------- */
+  const hashtags = [
+    "#台灣感性","#臺灣感性","#대만감성","#TaiwanVibes","#巷弄文化","#夜市生活","#Newtro","#生活感","#復古現代","#質感生活"
+  ];
+  const hashtagPage = document.getElementById('hashtag-page');
+  const hashtagContainer = document.getElementById('hashtag-container');
+  let hashtagInterval = null;
+
+  function spawnHashtag(){
+    const tag = document.createElement('div');
+    tag.className = 'hashtag';
+    tag.innerText = hashtags[Math.floor(Math.random()*hashtags.length)];
+    const size = 14 + Math.random()*26;
+    tag.style.fontSize = size + 'px';
+    const left = Math.random()*85; // percent
+    tag.style.left = left + '%';
+    tag.style.top = '-60px';
+    tag.style.opacity = 0.9;
+    hashtagContainer.appendChild(tag);
+
+    const distance = (hashtagPage.clientHeight + 120);
+    const duration = 3 + Math.random()*2;
+    gsap.to(tag, { top: distance, duration, ease: "power1.in", onComplete: ()=> tag.remove() });
+  }
+
+  const hashtagObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        if (!hashtagInterval) {
+          // spawn a few immediately
+          for(let i=0;i<3;i++){ setTimeout(spawnHashtag, i*200); }
+          hashtagInterval = setInterval(spawnHashtag, 700);
+        }
+      } else {
+        if (hashtagInterval) { clearInterval(hashtagInterval); hashtagInterval = null; }
+      }
+    });
+  }, { threshold: 0.2 });
+
+  hashtagObserver.observe(hashtagPage);
+
+  /* -------------------------
+     Navigation click scroll (smooth)
+  ------------------------- */
+  document.querySelectorAll('header nav div').forEach(el => {
+    el.addEventListener('click', (e) => {
+      const t = e.target.getAttribute('data-target');
+      if (!t) return;
+      const elTarget = document.getElementById(t);
+      if (elTarget) elTarget.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  /* -------------------------
+     Accessibility / mobile considerations
+  ------------------------- */
+  // Ensure videos are allowed to play muted on mobile (they must be muted to autoplay)
+  document.querySelectorAll('video').forEach(v => { v.muted = true; v.playsInline = true; });
+
+  /* -------------------------
+     投票功能與卡片淡入動畫
+  ------------------------- */
+  const voteCounts = { q1: { a: 0, b: 0 }, q2: { a: 0, b: 0 }, q3: { a: 0, b: 0 } };
+
+  window.vote = function(question, choice) {
+    voteCounts[question][choice]++;
+    const total = voteCounts[question].a + voteCounts[question].b;
+    const percentA = Math.round((voteCounts[question].a / total) * 100);
+    const percentB = Math.round((voteCounts[question].b / total) * 100);
+    document.getElementById(`${question}-result`).innerText = 
+      `結果：${percentA}% / ${percentB}%`;
+  };
+
+  // 問卷卡片淡入效果
+  const cards = document.querySelectorAll('.question-card');
+  const cardObserverOptions = { threshold: 0.2 };
+  const cardObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, cardObserverOptions);
+
+  cards.forEach(card => cardObserver.observe(card));
+
+</script>
+</body>
+</html>
